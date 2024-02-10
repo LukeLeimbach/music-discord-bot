@@ -1,0 +1,46 @@
+// This JSON represents the file structure of my discord/web app. Since I changed my project today, I am still working on what
+// data I will need. I will update this as I work more on the project.
+{
+    "users": {
+        "one": {
+            "discordID": 12345,
+            "relevantGuildIDs":[123, 456], // guilds are servers
+            "nickname": "Luke",
+            "audioSources": ["one"],
+            "accountTier": "Premium",
+            "songsQueued": 5,
+            "introsPlayed": 12,
+            "timeListened": 123,
+            "introBot": false,
+            "billingDate": "DATETIME FORMAT",
+            "billingPeriod": "monthly",
+            "credit"
+        },
+        "two": { ... }
+    },
+    "audioSources": {
+        "one": {
+            "mediaType": "mp3",
+            "name": "Some Song",
+            "artist": "John Smith",
+            "filename": "test_audio.mp3"
+        },
+        "two": { ... }
+    },
+    "globalLimits": {
+        "free": {
+            "streamTimeLimit": 123456,
+            "uploadLimit": 12345,
+            "storageLimit": 12345
+        },
+        "premium": {
+            "streamTimeLimit": 123456,
+            "uploadLimit": 12345,
+            "storageLimit": 12345
+        }
+    },
+    "botFiles": {
+        "entranceAudioFilename": "entrance.mp3",
+        "guilds": [123,456,789]
+    }
+}
