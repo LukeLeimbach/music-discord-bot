@@ -12,13 +12,19 @@
   "engines": {
     "node": "18"
   },
-  "main": "index.js",
+  "main": "src/bot.js",
   "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.4",
     "firebase-admin": "^11.8.0",
     "firebase-functions": "^4.7.0"
   },
   "devDependencies": {
     "firebase-functions-test": "^3.1.0"
   },
-  "private": true
+  "private": true,
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
