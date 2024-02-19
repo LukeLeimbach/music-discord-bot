@@ -14,16 +14,7 @@ const BOT_ID = 924079497412767844;
 // Determines if an object belongs to the client
 function is_client(obj=NaN) {
     let id;
-    try {
-        id = obj.author.id;
-    } catch (_) {
-        try {
-            id = obj.user.id;
-        } catch (_) {
-            console.log(`[!] Error in is_client(). Incorrect object passed.\nobj: ${obj}`)
-            return NaN;
-        }
-    }
+    console.log(typeof obj)
 
     return id == BOT_ID;
 };
