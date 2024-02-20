@@ -4,9 +4,10 @@
 // nice error handling for discord.js:   https://stackoverflow.com/questions/70309005/best-way-to-do-error-handling-in-a-discord-js-bot
 // Link to banner.png -> https://imgur.com/a/4k996Fi
 
+// For backend -> Send all requests as events, and have a listener module to handle all requests
+
 // Dependencies
-const {Client, IntentsBitField} = require('discord.js');
-const { EmbedBuilder } = require('discord.js');
+const {Client, IntentsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, ActionRowBuilder } = require('discord.js');
 require('dotenv').config({ path: '../.env' });
 
 // Constants
@@ -17,19 +18,55 @@ const defaultEmbed = new EmbedBuilder()
 	.setColor(0x0099FF)
 	.setTitle('Wall Music')
 	.setURL('https://wall-music-discord-bot.firebaseapp.com')
-	.setAuthor({ name: 'Some name', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
-	.setDescription('Control Wall Music from Online!')
-	.setThumbnail('https://i.imgur.com/AfFp7pu.png')
+	.setDescription('Queue:')
+	.setThumbnail('https://raw.githubusercontent.com/LukeLeimbach/music-discord-bot/bot/img/Logo.webp')
 	// .addFields(
 	// 	{ name: 'Regular field title', value: 'Some value here' },
 	// 	{ name: '\u200B', value: '\u200B' },
 	// 	{ name: 'Inline field title', value: 'Some value here', inline: true },
 	// 	{ name: 'Inline field title', value: 'Some value here', inline: true },
 	// )
-	// .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
-	.setImage('https://github.com/LukeLeimbach/music-discord-bot/blob/bot/bot/img/banner.png?raw=true')
+	.addFields({ name: 'Out My Body', value: 'lil loaded', inline: true })
+	.setImage('https://github.com/LukeLeimbach/music-discord-bot/blob/bot/img/banner.png?raw=true')
 	.setTimestamp()
 	.setFooter({ text: 'COMMANDS', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+
+
+// -- Buttons
+// Pause and Play
+const playPause = new ButtonBuilder()
+    .setCustomId('confirm')
+    .setLabel('Pause')
+    .setStyle(ButtonStyle.Primary);
+
+// Skip
+const skip = new ButtonBuilder()
+    .setCustomId('skip')
+    .setLabel('Skip')
+    .setStyle(ButtonStyle.Primary);
+
+// Stop
+const stop = new ButtonBuilder()
+    .setCustomId('stop')
+    .setLabel('Stop')
+    .setStyle(ButtonStyle.Danger);
+
+// Shuffle
+const shuffle = new ButtonBuilder()
+    .setCustomId('shuffle')
+    .setLabel('Shuffle')
+    .setStyle(ButtonStyle.Secondary);
+
+// Loop
+const loop = new ButtonBuilder()
+    .setCustomId('loop')
+    .setLabel('Loop')
+    .setStyle(ButtonStyle.Secondary);
+
+// Concatenate all buttons into row
+const actionRow = new ActionRowBuilder()
+    .addComponents(playPause, skip, loop, shuffle, stop);
+// -- END buttons
 
 // Init client
 const client = new Client({
@@ -52,8 +89,8 @@ function is_client(obj=NaN) {
     if (Object.hasOwn(obj, 'author')) return obj.author.id == BOT_ID;
     if (Object.hasOwn(obj, 'id')) return obj.id == BOT_ID;
     else {
-        console.log('[-] ERROR: is_client given incorrect object')
-        console.log('Object:\n' + obj + '\n')
+        console.log('[-] ERROR: is_client given incorrect object');
+        console.log('Object:\n' + obj + '\n');
     }
 };
 // -- END Helper Functions
@@ -68,11 +105,6 @@ client.on('ready', (c) => {
 });
 
 
-// ---------------------------------------------------------------------
-// Does something when play/pause is pressed.
-// ---------------------------------------------------------------------
-
-
 // TESTING
 client.on('messageCreate', (message) => {
     // Doesn't respond to self
@@ -80,8 +112,9 @@ client.on('messageCreate', (message) => {
 
     // respond to test with test
     if (message.content == 'test') {
-        defaultEmbed.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL()})
-        message.channel.send({ embeds: [defaultEmbed] });
+        defaultEmbed.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL()});
+        
+        message.channel.send({ embeds: [defaultEmbed], components: [actionRow] });
     }
 });
 
