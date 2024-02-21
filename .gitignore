@@ -9,8 +9,8 @@
 # testing
 /coverage
 
-# production
-/build
+react-app/functions
+react-app/node_modules
 
 react-app/functions/
 react-app/node_modules/
