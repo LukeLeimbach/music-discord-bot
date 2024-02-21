@@ -12,6 +12,11 @@
 # production
 /build
 
+react-app/functions/
+react-app/node_modules/
+
+node_modules/
+
 # misc
 .DS_Store
 .env.local
