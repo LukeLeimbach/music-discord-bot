@@ -9,64 +9,11 @@
 // Dependencies
 const {Client, IntentsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, ActionRowBuilder } = require('discord.js');
 require('dotenv').config({ path: '../.env' });
+const EMB = require('embed');
+const BTN = require('button');
 
 // Constants
 const BOT_ID = 924079497412767844;
-
-// Init default embed
-const defaultEmbed = new EmbedBuilder()
-	.setColor(0x0099FF)
-	.setTitle('Wall Music')
-	.setURL('https://wall-music-discord-bot.firebaseapp.com')
-	.setDescription('Queue:')
-	.setThumbnail('https://raw.githubusercontent.com/LukeLeimbach/music-discord-bot/bot/img/Logo.webp')
-	// .addFields(
-	// 	{ name: 'Regular field title', value: 'Some value here' },
-	// 	{ name: '\u200B', value: '\u200B' },
-	// 	{ name: 'Inline field title', value: 'Some value here', inline: true },
-	// 	{ name: 'Inline field title', value: 'Some value here', inline: true },
-	// )
-	.addFields({ name: 'Out My Body', value: 'lil loaded', inline: true })
-	.setImage('https://github.com/LukeLeimbach/music-discord-bot/blob/bot/img/banner.png?raw=true')
-	.setTimestamp()
-	.setFooter({ text: 'COMMANDS', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
-
-
-// -- Buttons
-// Pause and Play
-const playPause = new ButtonBuilder()
-    .setCustomId('confirm')
-    .setLabel('Pause')
-    .setStyle(ButtonStyle.Primary);
-
-// Skip
-const skip = new ButtonBuilder()
-    .setCustomId('skip')
-    .setLabel('Skip')
-    .setStyle(ButtonStyle.Primary);
-
-// Stop
-const stop = new ButtonBuilder()
-    .setCustomId('stop')
-    .setLabel('Stop')
-    .setStyle(ButtonStyle.Danger);
-
-// Shuffle
-const shuffle = new ButtonBuilder()
-    .setCustomId('shuffle')
-    .setLabel('Shuffle')
-    .setStyle(ButtonStyle.Secondary);
-
-// Loop
-const loop = new ButtonBuilder()
-    .setCustomId('loop')
-    .setLabel('Loop')
-    .setStyle(ButtonStyle.Secondary);
-
-// Concatenate all buttons into row
-const actionRow = new ActionRowBuilder()
-    .addComponents(playPause, skip, loop, shuffle, stop);
-// -- END buttons
 
 // Init client
 const client = new Client({
@@ -112,9 +59,9 @@ client.on('messageCreate', (message) => {
 
     // respond to test with test
     if (message.content == 'test') {
-        defaultEmbed.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL()});
+        EMB.defaultEmbed.setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL()});
         
-        message.channel.send({ embeds: [defaultEmbed], components: [actionRow] });
+        message.channel.send({ embeds: [EMB.defaultEmbed], components: [BTN.actionRow] });
     }
 });
 
