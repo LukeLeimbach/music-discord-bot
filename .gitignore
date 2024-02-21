@@ -12,9 +12,6 @@
 react-app/functions
 react-app/node_modules
 
-react-app/functions/
-react-app/node_modules/
-
 node_modules/
 
 # misc
