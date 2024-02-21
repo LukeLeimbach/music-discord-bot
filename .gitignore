@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+react-app/functions
+react-app/node_modules
+
 # misc
 .DS_Store
 .env.local

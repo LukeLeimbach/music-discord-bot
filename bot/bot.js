@@ -9,8 +9,8 @@
 // Dependencies
 const {Client, IntentsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, ActionRowBuilder } = require('discord.js');
 require('dotenv').config({ path: '../.env' });
-const EMB = require('embed');
-const BTN = require('button');
+const EMB = require('./embed.js');
+const BTN = require('./button.js');
 
 // Constants
 const BOT_ID = 924079497412767844;
