@@ -1,7 +1,7 @@
 import logo from './banner.png';
 import './App.css';
 
-function App() {
+function Placeholder() {
   return (
     <div className="App">
       <header className="App-header">
@@ -11,4 +11,4 @@ function App() {
   );
 }
 
-export default App;
+export default Placeholder;
