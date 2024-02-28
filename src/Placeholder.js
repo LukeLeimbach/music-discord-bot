@@ -1,5 +1,5 @@
 import logo from './banner.png';
-import './App.css';
+import './css/App.css';
 
 function Placeholder() {
   return (
