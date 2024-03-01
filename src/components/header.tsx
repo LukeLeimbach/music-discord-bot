@@ -2,7 +2,7 @@ import React from 'react';
 import { IonButton, IonButtons, IonHeader, IonIcon, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react';
 import { personCircle } from 'ionicons/icons';
 
-const Header: React.FC = () => {
+function Header() {
     return (
         <>
             <IonHeader>
