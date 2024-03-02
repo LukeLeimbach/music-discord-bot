@@ -1,7 +1,0 @@
-{
-  "name": "music-discord-bot",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react-vite"
-}
