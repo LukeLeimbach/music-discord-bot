@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import { setupIonicReact } from '@ionic/react';
+import './css/Theme.css'
 
 // Ionic CSS imports
 import '@ionic/react/css/core.css';

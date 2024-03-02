@@ -1,17 +1,28 @@
 import React from 'react';
 import '../css/MusicDashboard.css';
 import Header from './Header.tsx';
-import { IonContent } from '@ionic/react';
-import SearchBar from './SearchBar.tsx';
+import Reorder from './Reorder.tsx'
+import MusicControls from './MusicControls.tsx'
+import SearchBar from './SearchBar.tsx'
 
 function MusicDashboard() {
     return (
         <>
             <Header />
-            <IonContent>
-                <SearchBar props="This is a test search bar" />
-                <h1>TEST</h1>
-            </IonContent>
+            <div className="music-dashboard-container">
+                <div className="left-box">
+                    <h1>[GUILD_NAME]'s Queue</h1>
+                    <Reorder />
+                    <div className='music-dashboard-sub-container'>
+                        <MusicControls />
+                        <SearchBar props={"Search for a song"} />
+                    </div>
+                </div>
+                <div className="right-boxes">
+                    <div>Box 2</div>
+                    <div>Box 3</div>
+                </div>
+            </div>
         </>
     );
 }

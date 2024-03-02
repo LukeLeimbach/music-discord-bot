@@ -1,0 +1,46 @@
+/* Enable Scrolling and height of reorder section */
+.ion-content-scroll-host {
+  position: relative;
+  top: 0;
+  left: 0;
+
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* Style background of child */
+.ion-content-scroll-host > * {
+  background-color: var(--ion-color-secondary);
+}
+
+.test {
+  height: 100%;
+}
+
+/* Stop the IonContent from taking up 100hv */
+.reorder-content {
+  height: 50%;
+}
+
+
+/* Style Scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
