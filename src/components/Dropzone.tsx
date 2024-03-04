@@ -3,7 +3,7 @@ import '../css/Dropzone.css';
 import {useDropzone} from 'react-dropzone';
 
 function Dropzone(props) {
-  const {acceptedFiles, getRootProps, getInputProps} = useDropzone();
+  const {getRootProps, getInputProps} = useDropzone();
 
   return (
     <>
@@ -11,7 +11,7 @@ function Dropzone(props) {
         <section className='dropzone-container'>
         <div {...getRootProps({className: 'dropzone'})}>
             <input {...getInputProps()} />
-            <p>Drag 'n' drop some files here, or click to select files</p>
+            <p>Click or drop files here</p>
         </div>
         </section>
     </>
