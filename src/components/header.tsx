@@ -8,7 +8,7 @@ function Header() {
         <>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Icon Buttons</IonTitle>
+                    <IonTitle>Wall Music Dashboard</IonTitle>
                     <IonButtons slot="primary">
                         <IonButton>
                             <IonIcon slot="icon-only" icon={personCircle}></IonIcon>
