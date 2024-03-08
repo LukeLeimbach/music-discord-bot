@@ -7,5 +7,5 @@ ion-title {
 }
 
 ion-icon {
-    color: black;
+    color: var(--ion-color-dark);
 }

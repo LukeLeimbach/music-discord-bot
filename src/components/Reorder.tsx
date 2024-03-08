@@ -14,105 +14,107 @@ function Reorder() {
     event.detail.complete();
   }
 
+  const c = 'dark';
+
   return (
-    <IonContent scrollY={true} color='primary' className='reorder-content'>
+    <IonContent scrollY={true} color={c} className='reorder-content'>
       <div className='ion-content-scroll-host'>
         <IonList>
           <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 1</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
 
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 2</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
 
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 3</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
 
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 4</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
 
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 5</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
 
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 6</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>
-            <IonItem color='primary'>
+            <IonItem color={c}>
               <IonLabel>Item 9</IonLabel>
               <IonReorder slot="end"></IonReorder>
             </IonItem>

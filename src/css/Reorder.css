@@ -11,7 +11,7 @@
 
 /* Style background of child */
 .ion-content-scroll-host > * {
-  background-color: var(--ion-color-secondary);
+  background-color: var(--ion-color-dark-tint);
 }
 
 /* Stop the IonContent from taking up 100hv */
@@ -28,15 +28,15 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: var(--ion-color-dark-tint); 
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: var(--ion-color-primary-tint); 
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: var(--ion-color-primary); 
 }

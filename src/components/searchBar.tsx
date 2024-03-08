@@ -4,7 +4,7 @@ import { IonSearchbar } from '@ionic/react';
 function SearchBar({ props }) {
   return (
     <>
-      <IonSearchbar placeholder={ props }></IonSearchbar>
+      <IonSearchbar animated={true} placeholder={props}></IonSearchbar>
     </>
   );
 }
