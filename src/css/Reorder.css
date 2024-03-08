@@ -9,6 +9,12 @@
   overflow-y: auto;
 }
 
+/* Remove padding on top and bottom for browser */
+.list-md {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 /* Style background of child */
 .ion-content-scroll-host > * {
   background-color: var(--ion-color-dark-tint);
@@ -28,12 +34,13 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: var(--ion-color-dark-tint); 
+  background: var(--ion-color-dark-shade);
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--ion-color-primary-tint); 
+  background: var(--ion-color-primary-tint);
+  border-radius: 20px;
 }
 
 /* Handle on hover */

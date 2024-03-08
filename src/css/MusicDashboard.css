@@ -2,7 +2,7 @@
 .music-dashboard-container {
   display: flex;
   height: 100vh;
-  background-color: var(--ion-color-medium);
+  background-color: var(--ion-color-dark-tint);
 }
 
 .box {
@@ -17,7 +17,7 @@
 }
 
 .border {
-    border: 10px solid var(--ion-color-medium);
+    border: 10px solid var(--ion-color-dark-tint);
 }
 
 .music-dashboard-sub-container {
