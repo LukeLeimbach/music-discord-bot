@@ -8,7 +8,7 @@ This app is the combination of a Discord bot and a web app.
 ## Stack
 My stack is called FNoRFIo.
 - Firebase Functions
+- NodeJs
+- React
 - Firestore
-- NodeJS
-- Reach
 - Ionic Framework
