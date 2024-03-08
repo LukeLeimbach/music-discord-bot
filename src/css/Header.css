@@ -1,0 +1,11 @@
+ion-toolbar {
+    --background: linear-gradient(90deg, rgba(7,0,128,1) 0%, rgba(86,9,121,1) 50%, rgba(0,212,255,1) 100%);
+}
+
+ion-title {
+    --color: var(--ion-color-light);
+}
+
+ion-icon {
+    color: var(--ion-color-dark);
+}

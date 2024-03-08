@@ -1,0 +1,10 @@
+/* Make the control bar flex */
+.control-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.control-container > * {
+  flex: 1;
+  flex-wrap: nowrap;
+}
