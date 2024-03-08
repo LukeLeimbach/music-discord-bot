@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { IonApp } from '@ionic/react';
-import MusicDashboard from './components/MusicDashboard.tsx';
+import MusicDashboard from './components/MusicDashboard';
 
 const App: React.FC = () => {
   useEffect(() => {
