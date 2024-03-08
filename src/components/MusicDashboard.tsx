@@ -1,10 +1,10 @@
 import React from 'react';
 import '../css/MusicDashboard.css';
-import Header from './Header';
-import Reorder from './Reorder';
-import MusicControls from './MusicControls';
-import SearchBar from './SearchBar';
-import Dropzone from './Dropzone';
+import Header from './Header.tsx';
+import Reorder from './Reorder.tsx';
+import MusicControls from './MusicControls.tsx';
+import SearchBar from './SearchBar.tsx';
+import Dropzone from './Dropzone.tsx';
 
 function MusicDashboard() {
     return (
