@@ -17,7 +17,7 @@
 }
 
 .border {
-    border: 10px solid var(--ion-color-dark-tint);
+  border: 10px solid var(--ion-color-dark-tint);
 }
 
 .music-dashboard-sub-container {

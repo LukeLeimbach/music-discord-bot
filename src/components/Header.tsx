@@ -4,25 +4,25 @@ import { personCircle } from 'ionicons/icons';
 import '../css/Header.css'
 
 function Header() {
-    return (
-        <>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Wall Music Dashboard</IonTitle>
-                    <IonButtons slot="primary">
-                        <IonButton>
-                            <IonIcon slot="icon-only" icon={personCircle}></IonIcon>
-                        </IonButton>
-                    </IonButtons>
-                    <IonButtons slot="start">
-                        <IonButton>
-                            <IonMenuButton autoHide={false} color='light'></IonMenuButton>
-                        </IonButton>
-                    </IonButtons>
-                </IonToolbar>
-            </IonHeader>
-        </>
-    );
+  return (
+    <>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Wall Music Dashboard</IonTitle>
+          <IonButtons slot="primary">
+            <IonButton>
+              <IonIcon slot="icon-only" icon={personCircle}></IonIcon>
+            </IonButton>
+          </IonButtons>
+          <IonButtons slot="start">
+            <IonButton>
+              <IonMenuButton autoHide={false} color='light'></IonMenuButton>
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+    </>
+  );
 };
 
 export default Header;
