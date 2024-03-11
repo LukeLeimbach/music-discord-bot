@@ -15,11 +15,11 @@ const defaultEmbed = new EmbedBuilder()
     // 	{ name: 'Inline field title', value: 'Some value here', inline: true },
     // )
     .addFields({ name: 'Out My Body', value: 'lil loaded', inline: true })
-    .setImage('https://github.com/LukeLeimbach/music-discord-bot/blob/bot/img/banner.png?raw=true')
+    // .setImage('https://github.com/LukeLeimbach/music-discord-bot/blob/bot/img/banner.png?raw=true')
     .setTimestamp()
     .setFooter({ text: 'COMMANDS', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
 
 
 module.exports = {
-    defaultEmbed: defaultEmbed
+    defaultEmbed: defaultEmbed,
 }
