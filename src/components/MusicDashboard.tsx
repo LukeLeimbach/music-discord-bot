@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../css/MusicDashboard.css';
 import Header from './Header.tsx';
 import Reorder from './Reorder.tsx';
@@ -7,16 +7,22 @@ import SearchBar from './SearchBar.tsx';
 import Dropzone from './Dropzone.tsx';
 
 function MusicDashboard() {
+  const [searchText, setSearchText] = useState('');
+
+  const setSearchTextFromSearchBar = (newValue: string) => {
+    setSearchText(newValue);
+  }
+
   return (
     <>
       <Header />
       <div className="music-dashboard-container">
         <div className="box border">
-          <h1>[GUILD_NAME]'s Queue</h1>
-          <Reorder />
+          <h1>Wall Moment's Queue</h1>
+          <Reorder searchText={searchText} />
           <div className='music-dashboard-sub-container'>
             <MusicControls />
-            <SearchBar props={"Search for a song"} />
+            <SearchBar onSearchSubmit={setSearchTextFromSearchBar} />
           </div>
         </div>
         <div className="box">

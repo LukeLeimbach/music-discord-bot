@@ -47,3 +47,17 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--ion-color-primary); 
 }
+
+.fake-img {
+  height: 100px; width: 100px; background-color:green;
+  text-align: center;
+  top: 40%;
+}
+
+.item-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 10px;
+  /* TODO: Update style & content */
+}

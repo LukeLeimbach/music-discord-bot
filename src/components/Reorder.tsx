@@ -1,123 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { IonContent, IonItem, IonLabel, IonList, IonReorder, IonReorderGroup, ItemReorderEventDetail } from '@ionic/react';
 import '../css/Reorder.css'
 
-function Reorder() {
-  function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
-    // The `from` and `to` properties contain the index of the item
-    // when the drag started and ended, respectively
-    console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
+function Reorder({ searchText }) {
+  const [items, setItems] = useState<string[]>([])
 
-    // Finish the reorder and position the item in the DOM based on
-    // where the gesture ended. This method can also be called directly
-    // by the reorder group
-    event.detail.complete();
-  }
+  const handleNewItem = useCallback((newItem: string) => {
+    setItems((prevItems) => [newItem, ...prevItems]);
+  }, []);
+
+  useEffect(() => {
+    if (searchText) {
+      handleNewItem(searchText);
+    }
+  }, [searchText, handleNewItem]);
 
   const c = 'dark';
+
+  const itemList = items.map((item, index) => (
+    <IonItem key={index} color={c}>
+      <div className='item-container'>
+        <IonLabel>Item: {item}</IonLabel>
+        <div className='fake-img'>ALBUM COVER</div>
+      </div>
+      <IonReorder slot="end" />
+    </IonItem>
+  ));
+  
+  function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
+    console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
+    event.detail.complete();
+  }
 
   return (
     <IonContent scrollY={true} color={c} className='reorder-content'>
       <div className='ion-content-scroll-host'>
         <IonList>
           <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
-            <IonItem color={c}>
-              <IonLabel>Item 1</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-
-            <IonItem color={c}>
-              <IonLabel>Item 2</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-
-            <IonItem color={c}>
-              <IonLabel>Item 3</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-
-            <IonItem color={c}>
-              <IonLabel>Item 4</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-
-            <IonItem color={c}>
-              <IonLabel>Item 5</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 6</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
-            <IonItem color={c}>
-              <IonLabel>Item 9</IonLabel>
-              <IonReorder slot="end"></IonReorder>
-            </IonItem>
+            {itemList}
           </IonReorderGroup>
         </IonList>
       </div>
