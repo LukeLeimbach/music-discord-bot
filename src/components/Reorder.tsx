@@ -13,7 +13,7 @@ function Reorder({ searchText }) {
     if (searchText) {
       handleNewItem(searchText);
     }
-  }, [searchText, handleNewItem]);
+  }, [searchText]);
 
   const c = 'dark';
 
