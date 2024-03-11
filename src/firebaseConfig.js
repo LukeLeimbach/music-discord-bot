@@ -6,7 +6,7 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCtiJxlw_gu-BJcFb_xT0mHaoM-GVsNPIU",
+  apiKey: "",
   authDomain: "wall-music-discord-bot.firebaseapp.com",
   databaseURL: "https://wall-music-discord-bot-default-rtdb.firebaseio.com",
   projectId: "wall-music-discord-bot",
