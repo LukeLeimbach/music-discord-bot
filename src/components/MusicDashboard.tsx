@@ -4,7 +4,6 @@ import Reorder from './Reorder.tsx';
 import MusicControls from './MusicControls.tsx';
 import SearchBar from './SearchBar.tsx';
 // import Dropzone from './Dropzone.tsx';
-import { collection, addDoc } from 'firebase/firestore'
 import '../css/MusicDashboard.css';
 
 
