@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonContent, IonItem, IonLabel, IonList, IonReorder, IonReorderGroup, ItemReorderEventDetail } from '@ionic/react';
+import { IonContent, IonItem, IonLabel, IonList, IonReorder, IonReorderGroup } from '@ionic/react';
 import '../css/Reorder.css'
 
 function Reorder({ queue }) {
@@ -15,7 +15,7 @@ function Reorder({ queue }) {
     </IonItem>
   ));
   
-  function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
+  function handleReorder(event) {
     console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
     event.detail.complete();
   }

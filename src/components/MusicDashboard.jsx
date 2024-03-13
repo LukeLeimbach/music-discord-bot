@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import Header from './Header.tsx';
-import Reorder from './Reorder.tsx';
-import MusicControls from './MusicControls.tsx';
-import SearchBar from './SearchBar.tsx';
-// import Dropzone from './Dropzone.tsx';
+import Header from './Header.jsx';
+import Reorder from './Reorder.jsx';
+import MusicControls from './MusicControls.jsx';
+import SearchBar from './SearchBar.jsx';
 import '../css/MusicDashboard.css';
 
 
 function MusicDashboard() {
-  const [queue, setQueue] = useState<string[]>([]);
+  const [queue, setQueue] = useState([]);
 
-  const handleNewQueueItem = (newValue: string) => {
-    setQueue((prevQueue) => [newValue, ...prevQueue]);
-    console.log(queue);
-  };
+  const guildID = '261601676941721602';
 
   return (
     <>
@@ -24,7 +20,7 @@ function MusicDashboard() {
           <Reorder queue={queue} />
           <div className='music-dashboard-sub-container'>
             <MusicControls />
-            <SearchBar onSearchSubmit={handleNewQueueItem} />
+            <SearchBar />
           </div>
         </div>
         {/* <div className="box">

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { IonApp } from '@ionic/react';
-import MusicDashboard from './components/MusicDashboard.tsx';
+import MusicDashboard from './components/MusicDashboard.jsx';
 
-const App: React.FC = () => {
+function App() {
   useEffect(() => {
     document.title = "Wall Music Dashboard"
   }, []);

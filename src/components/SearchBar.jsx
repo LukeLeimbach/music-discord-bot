@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { IonSearchbar } from '@ionic/react';
 
-function SearchBar({ onSearchSubmit }) {
+function SearchBar() {
   const [tempValue, setTempValue] = useState('');
 
-  const handleSearchChange = (e) => {
+  const guildID = '261601676941721602';
+
+  function handleSearchChange(e) {
     setTempValue(e.detail.value);
   }
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       if (tempValue !== '') {
-        onSearchSubmit(tempValue);
+        
       }
     }
   }
