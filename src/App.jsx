@@ -8,7 +8,7 @@ function App() {
   }, []);
   return (
     <>
-      <IonApp>
+      <IonApp className='app'>
         <MusicDashboard />
       </IonApp>
     </>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IonSearchbar } from '@ionic/react';
 import getSpotifyInfo from '../spotify.mjs';
 import { addToQueue, guildID_dev } from '../queue.mjs';
+import '../css/SearchBar.css';
 
 function SearchBar() {
   const [searchBarValue, setSearchBarValue] = useState('');
@@ -26,10 +27,12 @@ function SearchBar() {
 
   return (
       <IonSearchbar
-        animated={true}
+        animated={false}
         placeholder={"Search for a song"}
         onIonInput={handleSearchChange}
         onKeyDown={handleKeyPress}
+        showCancelButton="focus"
+        class='custom'
       />
   );
 }
