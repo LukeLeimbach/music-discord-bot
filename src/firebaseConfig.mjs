@@ -1,14 +1,13 @@
-const dotenv = await import('dotenv');
-dotenv.config({ path: '../.env' });
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore"; 
+import environment from "./settings.js";
 
 let db = false;
 
 const getDb = () => {
   if (!db) {
     const firebaseConfig = {
-      apiKey: process.env.FIREBASE_API_KEY,
+      apiKey: environment.FIREBASE_API_KEY,
       authDomain: "wall-music-discord-bot.firebaseapp.com",
       databaseURL: "https://wall-music-discord-bot-default-rtdb.firebaseio.com",
       projectId: "wall-music-discord-bot",

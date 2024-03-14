@@ -1,19 +1,38 @@
 import React, { useState } from 'react';
+import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 import { IonSearchbar } from '@ionic/react';
+import environment from "../settings.js"
 
 function SearchBar() {
-  const [tempValue, setTempValue] = useState('');
+  const [searchBarValue, setSearchBarValue] = useState('');
+  const [spotifyInfo, setSpotifyInfo] = useState('');
 
-  const guildID = '261601676941721602';
+  // const guildID = '261601676941721602';
 
   function handleSearchChange(e) {
-    setTempValue(e.detail.value);
+    setSearchBarValue(e.detail.value);
   }
 
-  const handleKeyPress = (e) => {
+  async function getSpotifyInfo(q, type='track') {
+    const api = SpotifyApi.withClientCredentials(
+      environment().SPOTIFY_CLIENT_ID,
+      environment().SPOTIFY_CLIENT_SECRET
+    );
+
+    const data = await api.search(q, [type]);
+
+    return {
+      'song': data.tracks.items[0].name,
+      'artist': data.tracks.items[0].artists[0].name,
+      'explicit': data.tracks.items[0].explicit,
+      'duration_s': data.tracks.items[0].duration_ms / 1000
+    };
+  }
+
+  const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
-      if (tempValue !== '') {
-        
+      if (searchBarValue !== '') {
+        await getSpotifyInfo(searchBarValue).then((val) => {setSpotifyInfo(val)});
       }
     }
   }
@@ -22,8 +41,7 @@ function SearchBar() {
       <IonSearchbar
         animated={true}
         placeholder={"Search for a song"}
-        value={tempValue}
-        onIonInput={handleSearchChange}
+        onIonChange={handleSearchChange}
         onKeyDown={handleKeyPress}
       />
   );
