@@ -67,4 +67,4 @@ client.on('messageCreate', (message) => {
 
 
 // Start client
-client.login(process.env.BOT_TOKEN);
+client.login(process.env.REACT_APP_BOT_TOKEN);

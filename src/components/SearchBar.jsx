@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 import { IonSearchbar } from '@ionic/react';
-import environment from "../settings.js";
 import { addToQueue, guildID_dev } from '../queue.mjs';
 
 function SearchBar() {
@@ -14,9 +13,10 @@ function SearchBar() {
   }
 
   async function getSpotifyInfo(q, type='track') {
+    console.log(process.env.REACT_APP_SPOTIFY_CLIENT_ID)
     const api = SpotifyApi.withClientCredentials(
-      environment().SPOTIFY_CLIENT_ID,
-      environment().SPOTIFY_CLIENT_SECRET
+      process.env.REACT_APP_SPOTIFY_CLIENT_ID,
+      process.env.REACT_APP_SPOTIFY_CLIENT_SECRET
     );
 
     const data = await api.search(q, [type]);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from './Header.jsx';
 import Reorder from './Reorder.jsx';
 import MusicControls from './MusicControls.jsx';
@@ -7,17 +7,13 @@ import '../css/MusicDashboard.css';
 
 
 function MusicDashboard() {
-  const [queue, setQueue] = useState([]);
-
-  const guildID = '261601676941721602';
-
   return (
     <>
       <Header />
       <div className="music-dashboard-container">
         <div className="box border">
           <h1>Wall Moment's Queue</h1>
-          <Reorder queue={queue} />
+          <Reorder />
           <div className='music-dashboard-sub-container'>
             <MusicControls />
             <SearchBar />
