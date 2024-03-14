@@ -14,7 +14,7 @@ function SearchBar() {
   }
 
   const handleKeyPress = async (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' || e.key === 'Return') {
       if (searchBarValue !== '') {
         console.log("Searchbar value is:", searchBarValue, "| Starting search...")
         await getSpotifyInfo(searchBarValue).then((spotify_obj) => {
