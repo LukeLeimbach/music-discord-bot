@@ -82,10 +82,10 @@ function Reorder() {
                 <IonThumbnail slot="start">
                   <IonImg src={item.thumbnailURL}/>
                 </IonThumbnail>
-                <IonButton color={'danger'} onClick={() => handleDeleteClick(item)}>
-                  <IonIcon slot="icon-only" icon={trashOutline}></IonIcon>
-                </IonButton>
               </div>
+              <IonButton slot='end' color={'danger'} fill='outline' onClick={() => handleDeleteClick(item)}>
+                <IonIcon slot="icon-only" color='danger' size='large' icon={trashOutline}></IonIcon>
+              </IonButton> 
               <IonReorder slot="end" />
             </IonItem>
           ))}
