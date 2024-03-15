@@ -10,7 +10,9 @@ function Reorder() {
   const [queue, setQueue] = useState([]);
 
   useEffect(() => {
+    console.log("Getting db..")
     const db = getDb();
+    console.log("Querying queue collection...")
     const q = query(collection(db, "guilds", guildID_dev, "queue"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const queueData = querySnapshot.docs.map(doc => ({
@@ -45,13 +47,11 @@ function Reorder() {
       return;
     }
 
+    // Setting queue
     setQueue(currentQueue => {
       const newQueue = [...currentQueue];
       const itemToMove = newQueue.splice(from, 1)[0];
       newQueue.splice(to, 0, itemToMove);
-
-      // Optimistically update the UI immediately
-      event.detail.complete(newQueue);
 
       // Asynchronously update Firestore in the background
       newQueue.forEach((item, index) => {
@@ -60,6 +60,9 @@ function Reorder() {
           order: index
         }).catch(error => console.error("Error updating document:", error));
       });
+
+      // Complete reordering event
+      event.detail.complete(newQueue);
 
       // Return the new state
       return newQueue;

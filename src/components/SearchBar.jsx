@@ -21,6 +21,7 @@ function SearchBar() {
           console.log("Found Spotify Song...")
           addToQueue(guildID, spotify_obj.song, spotify_obj.artist, spotify_obj.thumbnailURL, spotify_obj.explicit, spotify_obj.duration_s)
         });
+        // TODO: Clear searchbar - https://stackoverflow.com/questions/39151848/clear-text-in-ion-searchbar
       }
     }
   }
