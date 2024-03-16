@@ -13,15 +13,16 @@ function SearchBar() {
     setSearchBarValue(e.detail.value);
   }
 
-  const handleKeyPress = async (e) => {
+  async function handleKeyPress(e) {
     if (e.key === 'Enter' || e.key === 'Return') {
       if (searchBarValue !== '') {
         console.log("Searchbar value is:", searchBarValue, "| Starting search...")
         await getSpotifyInfo(searchBarValue).then((spotify_obj) => {
-          console.log("Found Spotify Song...")
+          console.log("Found Spotify Song...");
           addToQueue(guildID, spotify_obj.song, spotify_obj.artist, spotify_obj.thumbnailURL, spotify_obj.explicit, spotify_obj.duration_s)
         });
-        // TODO: Clear searchbar - https://stackoverflow.com/questions/39151848/clear-text-in-ion-searchbar
+        console.log('Clearing searchbar...')
+        setSearchBarValue('');
       }
     }
   }
@@ -34,6 +35,7 @@ function SearchBar() {
         onKeyDown={handleKeyPress}
         showCancelButton="focus"
         class='custom'
+        value={searchBarValue}
       />
   );
 }
