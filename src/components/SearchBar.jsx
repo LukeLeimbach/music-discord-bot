@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonSearchbar } from '@ionic/react';
+import { IonSearchbar, IonButton, IonInput } from '@ionic/react';
 import getSpotifyInfo from '../spotify.mjs';
 import { addToQueue, guildID_dev } from '../queue.mjs';
 import '../css/SearchBar.css';
@@ -13,21 +13,26 @@ function SearchBar() {
     setSearchBarValue(e.detail.value);
   }
 
-  async function handleKeyPress(e) {
+  async function handleSearchBarValue() {
+    console.log("Searchbar value is:", searchBarValue, "| Starting search...")
+    await getSpotifyInfo(searchBarValue).then((spotify_obj) => {
+      console.log("Found Spotify Song...");
+      addToQueue(guildID, spotify_obj.song, spotify_obj.artist, spotify_obj.thumbnailURL, spotify_obj.explicit, spotify_obj.duration_s)
+    });
+    console.log('Clearing searchbar...')
+    setSearchBarValue('');
+  }
+  
+  function handleKeyPress(e) {
     if (e.key === 'Enter' || e.key === 'Return') {
       if (searchBarValue !== '') {
-        console.log("Searchbar value is:", searchBarValue, "| Starting search...")
-        await getSpotifyInfo(searchBarValue).then((spotify_obj) => {
-          console.log("Found Spotify Song...");
-          addToQueue(guildID, spotify_obj.song, spotify_obj.artist, spotify_obj.thumbnailURL, spotify_obj.explicit, spotify_obj.duration_s)
-        });
-        console.log('Clearing searchbar...')
-        setSearchBarValue('');
+        handleSearchBarValue()
       }
     }
   }
 
   return (
+    <div className='searchbar-container'>
       <IonSearchbar
         animated={false}
         placeholder={"Search for a song"}
@@ -37,6 +42,8 @@ function SearchBar() {
         class='custom'
         value={searchBarValue}
       />
+      <IonButton fill="solid" onClick={() => handleSearchBarValue()}>Submit</IonButton>
+    </div>
   );
 }
 
