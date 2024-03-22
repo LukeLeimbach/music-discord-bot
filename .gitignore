@@ -31,3 +31,6 @@ yarn-error.log*
 ios/
 
 src/settings.js
+
+bot/config.json
+bot/node_modules

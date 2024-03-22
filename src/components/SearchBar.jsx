@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonSearchbar, IonButton, IonInput } from '@ionic/react';
+import { IonSearchbar, IonButton } from '@ionic/react';
 import getSpotifyInfo from '../spotify.mjs';
 import { addToQueue, guildID_dev } from '../queue.mjs';
 import '../css/SearchBar.css';
