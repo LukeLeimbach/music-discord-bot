@@ -1,5 +1,6 @@
 const { Events } = require('discord.js');
 
+// Handle command interactions
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {

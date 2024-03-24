@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { IonSearchbar, IonButton } from '@ionic/react';
-import getSpotifyInfo from '../spotify.mjs';
-import { addToQueue, guildID_dev } from '../queue.mjs';
+import { getSpotifyInfo } from '../spotify.mjs';
+import { addToQueue } from '../queue.mjs';
 import '../css/SearchBar.css';
 
 function SearchBar() {
   const [searchBarValue, setSearchBarValue] = useState('');
 
-  const guildID = guildID_dev;
+  const devTestGuildId = process.env.REACT_APP_DEV_GUILD_ID;
 
   function handleSearchChange(e) {
     setSearchBarValue(e.detail.value);
@@ -17,7 +17,7 @@ function SearchBar() {
     console.log("Searchbar value is:", searchBarValue, "| Starting search...")
     await getSpotifyInfo(searchBarValue).then((spotify_obj) => {
       console.log("Found Spotify Song...");
-      addToQueue(guildID, spotify_obj.song, spotify_obj.artist, spotify_obj.thumbnailURL, spotify_obj.explicit, spotify_obj.duration_s)
+      addToQueue(devTestGuildId, spotify_obj.song, spotify_obj.artist, spotify_obj.thumbnailURL, spotify_obj.explicit, spotify_obj.duration_s)
     });
     console.log('Clearing searchbar...')
     setSearchBarValue('');

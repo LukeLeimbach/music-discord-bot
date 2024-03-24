@@ -1,6 +1,6 @@
-const {Client, IntentsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, ActionRowBuilder } = require('discord.js');
+const { ButtonBuilder, ButtonStyle } = require('discord.js');
 
-// -- Buttons
+// -- Buttons--
 // Pause and Play
 const playPause = new ButtonBuilder()
     .setCustomId('confirm')
