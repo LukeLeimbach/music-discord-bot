@@ -16,7 +16,7 @@ async function addToQueue(guildId, content) {
 // Add song to queue if in correct channel
 module.exports = {
 	name: Events.MessageCreate,
-	execute(message) {
+	async execute(message) {
     // Ignoring client messages for now
     if (isClient(message)) return;
 
@@ -25,6 +25,6 @@ module.exports = {
 
     // Now were 100% inside the testing channel
     content = message.content
-    addToQueue(message.guildId, message);
+    await addToQueue(message.guildId, message);
 	},
 };

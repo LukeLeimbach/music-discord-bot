@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 require('dotenv').config({ path: '../.env' });
 
-const defaultEmbed = new EmbedBuilder()
+const embed = new EmbedBuilder()
   .setColor(0x0099FF)
   .setTitle('Wall Music')
   .setURL('https://wall-music-discord-bot.firebaseapp.com')
@@ -13,5 +13,5 @@ const defaultEmbed = new EmbedBuilder()
 
 // Init default embed
 module.exports = {
-  defaultEmbed: defaultEmbed
+  embed: embed
 }

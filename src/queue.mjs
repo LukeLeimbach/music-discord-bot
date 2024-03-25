@@ -1,11 +1,13 @@
 import { collection, getDocs, query, where, deleteDoc, doc, setDoc } from "firebase/firestore";
 import getDb from './firebaseConfig.mjs';
 
-export async function getQueue(guildID) {
+// Gets a snapshot of the query as a promise
+export async function getQuerySnapshot(guildID) {
   const queue = await getDocs(collection(getDb(), "guilds", guildID, "queue"));
   return queue;
 }
 
+// Adds a song to queue (meant to call getSpotifyInfo for these args)
 export async function addToQueue(guildID, song, artist, thumbnailURL, explicit, duration_s) {
   console.log("Adding to queue...");
   const db = getDb();

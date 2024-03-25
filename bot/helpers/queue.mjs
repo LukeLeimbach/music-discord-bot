@@ -1,7 +1,7 @@
 import { collection, getDocs, query, where, deleteDoc, doc, setDoc } from "firebase/firestore";
 import getDb from './firebaseConfig.mjs';
 
-export async function getQueue(guildID) {
+export async function getQuerySnapshot(guildID) {
   const queue = await getDocs(collection(getDb(), "guilds", guildID, "queue"));
   return queue;
 }

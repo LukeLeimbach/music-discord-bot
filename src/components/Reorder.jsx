@@ -28,7 +28,7 @@ function Reorder() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [devTestGuildId]);
 
   async function handleDeleteClick(item) {
     try {
@@ -71,22 +71,23 @@ function Reorder() {
     });
   }
 
-  const c = 'dark'; // Your desired color
+  const c = 'dark'; // Dark Color
+  const t = 'tertiary'; // Primary color
 
   return (
     <IonContent scrollY={true} color={c} className='reorder-content'>
       <IonList>
         <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
           {queue.map((item, index) => (
-            <IonItem key={index} color={c}>
+            <IonItem key={index} color={index === 0 ? t : c}>
               <div className='item-container'>
+                <IonThumbnail slot="start">
+                  <IonImg src={item.thumbnailURL}/>
+                </IonThumbnail>
                 <IonLabel>
                   <h2>{item.song} - {item.artist}</h2>
                   <p>Explicit: {item.explicit ? 'Yes' : 'No'} | Duration: {item.duration_s} seconds</p>
                 </IonLabel>
-                <IonThumbnail slot="start">
-                  <IonImg src={item.thumbnailURL}/>
-                </IonThumbnail>
               </div>
               <IonButton slot='end' color={'danger'} fill='outline' onClick={() => handleDeleteClick(item)}>
                 <IonIcon slot="icon-only" color='danger' size='large' icon={trashOutline}></IonIcon>
