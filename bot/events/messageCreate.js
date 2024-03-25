@@ -2,7 +2,7 @@ const { Events } = require('discord.js');
 const { devTestChannelId } = require('../config.json');
 const { isClient } = require('../helpers/isClient.js');
 require('dotenv').config({path:__dirname+'../../../.env'})
- 
+
 // Dynamic imports to use add messages to queue if typed
 async function addToQueue(guildId, content) {
   const { addToQueue } = await import('../helpers/queue.mjs');
