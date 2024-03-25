@@ -1,5 +1,8 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 require('dotenv').config({ path: '../.env' });
+
+const banner = new AttachmentBuilder(__dirname + '../../img/banner.png');
+const logopng = new AttachmentBuilder(__dirname + '../../img/logo.png');
 
 const embed = new EmbedBuilder()
   .setColor(0x0099FF)
@@ -13,5 +16,7 @@ const embed = new EmbedBuilder()
 
 // Init default embed
 module.exports = {
-  embed: embed
+  embed: embed,
+  banner: banner,
+  logopng: logopng,
 }
