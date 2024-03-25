@@ -41,3 +41,30 @@ for (const file of eventFiles) {
 
 // Login Client
 client.login(token);
+
+// Handle exit proceedures 
+process.stdin.resume(); // so the program will not close instantly
+
+function exitHandler(exitCode) {
+  console.log(exitCode == 'SIGINT' ? '[!] Ctrl+C Detected' : exitCode == 0 ? '[...] Exiting Program' : exitCode);
+
+  // On exit to program
+  if (exitCode == 0) {
+    console.log("TODO: [...] Sending embed message ID to Firestore")
+    console.log("TODO: [+] Sent embed message ID to Firestore")
+  }
+  process.exit();
+}
+
+// do something when app is closing
+process.on('exit', exitHandler.bind(null));
+
+// catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null));
+
+// catches "kill pid" (for example: nodemon restart)
+process.on('SIGUSR1', exitHandler.bind(null));
+process.on('SIGUSR2', exitHandler.bind(null));
+
+// catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null));
