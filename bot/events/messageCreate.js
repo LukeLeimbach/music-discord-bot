@@ -1,9 +1,6 @@
 const { Events } = require('discord.js');
 const { devTestChannelId } = require('../config.json');
 const { isClient } = require('../helpers/isClient.js');
-const { updateEmbedQueue } = require('../helpers/updateEmbedQueue.js')
-const { actionRow } = require('../components/button.js');
-const { embed, banner, logopng } = require('../components/embed.js');
 require('dotenv').config({path:__dirname+'../../../.env'})
 
 // Dynamic imports to use add messages to queue if typed
@@ -33,13 +30,7 @@ module.exports = {
     if (message.channelId != devTestChannelId) return;
 
     // Now were 100% inside the testing channel listening for user input
-    // so when we get a message, we add it to queue, update the embed, then send it
-    await addToQueue(message.guildId, message).then(() => {
-      updateEmbedQueue(message).then(() => {
-        getEmbedMessageId(message.guildId).then((msg) => {
-          msg.update({ embeds: [embed], components: [actionRow], files: [banner, logopng] });
-        })
-      });
-    });
+    // add song to queue
+    await addToQueue(message.guildId, message);
 	},
 };

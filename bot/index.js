@@ -42,6 +42,8 @@ for (const file of eventFiles) {
 // Login Client
 client.login(token);
 
+
+
 // Handle exit proceedures 
 process.stdin.resume(); // so the program will not close instantly
 

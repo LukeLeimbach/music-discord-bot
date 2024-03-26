@@ -70,7 +70,7 @@ export async function getEmbedMessageId(guildId) {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
+      console.log("Embed Message Id:", docSnap.data().embedMessageId);
       return docSnap.data().embedMessageId; // Returns the embedMessageId field
     } else {
       // doc.data() will be undefined in this case
