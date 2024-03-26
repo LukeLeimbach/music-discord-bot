@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IonContent, IonItem, IonLabel, IonList, IonReorder, IonReorderGroup, IonThumbnail, IonImg, IonButton, IonIcon } from '@ionic/react';
 import { trashOutline } from 'ionicons/icons';
-import { guildID_dev, deleteQueueItem } from '../queue.mjs';
+import { deleteQueueItem } from '../queue.mjs';
 import { doc, updateDoc, collection, query, onSnapshot } from "firebase/firestore";
 import getDb from '../firebaseConfig.mjs';
 import '../css/Reorder.css';
@@ -9,9 +9,13 @@ import '../css/Reorder.css';
 function Reorder() {
   const [queue, setQueue] = useState([]);
 
+  const devTestGuildId = process.env.REACT_APP_DEV_GUILD_ID;
+
   useEffect(() => {
+    console.log("Getting db..")
     const db = getDb();
-    const q = query(collection(db, "guilds", guildID_dev, "queue"));
+    console.log("Querying queue collection...")
+    const q = query(collection(db, "guilds", devTestGuildId, "queue"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const queueData = querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -24,12 +28,12 @@ function Reorder() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [devTestGuildId]);
 
   async function handleDeleteClick(item) {
     try {
       // Delete item from Firestore
-      await deleteQueueItem(guildID_dev, { id: item.id }); // Assuming we use the document ID to delete
+      await deleteQueueItem(devTestGuildId, { id: item.id }); // Assuming we use the document ID to delete
 
       // Optimistically remove the item from local state to update UI
       setQueue(currentQueue => currentQueue.filter(qItem => qItem.id !== item.id));
@@ -45,43 +49,45 @@ function Reorder() {
       return;
     }
 
+    // Setting queue
     setQueue(currentQueue => {
       const newQueue = [...currentQueue];
       const itemToMove = newQueue.splice(from, 1)[0];
       newQueue.splice(to, 0, itemToMove);
 
-      // Optimistically update the UI immediately
-      event.detail.complete(newQueue);
-
       // Asynchronously update Firestore in the background
       newQueue.forEach((item, index) => {
-        const itemDocRef = doc(getDb(), "guilds", guildID_dev, "queue", item.id);
+        const itemDocRef = doc(getDb(), "guilds", devTestGuildId, "queue", item.id);
         updateDoc(itemDocRef, {
           order: index
         }).catch(error => console.error("Error updating document:", error));
       });
+
+      // Complete reordering event
+      event.detail.complete(newQueue);
 
       // Return the new state
       return newQueue;
     });
   }
 
-  const c = 'dark'; // Your desired color
+  const c = 'dark'; // Dark Color
+  const t = 'tertiary'; // Primary color
 
   return (
     <IonContent scrollY={true} color={c} className='reorder-content'>
       <IonList>
         <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
           {queue.map((item, index) => (
-            <IonItem key={index} color={c}>
+            <IonItem key={index} color={index === 0 ? t : c}>
               <div className='item-container'>
+                <IonThumbnail slot="start">
+                  <IonImg src={item.thumbnailURL}/>
+                </IonThumbnail>
                 <IonLabel>
                   <h2>{item.song} - {item.artist}</h2>
                   <p>Explicit: {item.explicit ? 'Yes' : 'No'} | Duration: {item.duration_s} seconds</p>
                 </IonLabel>
-                <IonThumbnail slot="start">
-                  <IonImg src={item.thumbnailURL}/>
-                </IonThumbnail>
               </div>
               <IonButton slot='end' color={'danger'} fill='outline' onClick={() => handleDeleteClick(item)}>
                 <IonIcon slot="icon-only" color='danger' size='large' icon={trashOutline}></IonIcon>

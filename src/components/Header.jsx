@@ -10,12 +10,12 @@ function Header() {
         <IonToolbar>
           <IonTitle>Wall Music Dashboard</IonTitle>
           <IonButtons slot="primary">
-            <IonButton>
+            <IonButton disabled={true}>
               <IonIcon slot="icon-only" icon={personCircle}></IonIcon>
             </IonButton>
           </IonButtons>
           <IonButtons slot="start">
-            <IonButton>
+            <IonButton disabled={true}>
               <IonMenuButton autoHide={false} color='light'></IonMenuButton>
             </IonButton>
           </IonButtons>

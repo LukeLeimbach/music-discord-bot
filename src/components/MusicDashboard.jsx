@@ -13,6 +13,7 @@ function MusicDashboard() {
       <div className="music-dashboard-container">
         <div className="box border">
           <h1>Wall Moment's Queue</h1>
+          <p>Attention: This app does <u>not</u> play audio through the browser. You need the Discord bot to listen (which I'm still working on ;-; )</p>
           <Reorder />
           <div className='music-dashboard-sub-container'>
             <MusicControls />
