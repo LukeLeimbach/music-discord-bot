@@ -18,7 +18,7 @@ export const listenToQueueChanges = (client) => {
         snapshot.docChanges().forEach(change => {
           console.log('[...] Updating embed')
           updateEmbed(client, guildId).then(() => {
-            console.log('[+] Embed Updated', change);
+            console.log('[+] Embed Updated');
           });
         });
       } else {
