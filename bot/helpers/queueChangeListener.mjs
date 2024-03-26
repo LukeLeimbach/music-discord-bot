@@ -23,7 +23,7 @@ export const listenToQueueChanges = (client) => {
         });
       } else {
         // Skip processing for the first invocation but log it or handle as needed
-        console.log(`Initial snapshot for guild ${guildId} received, skipping update.`);
+        console.log(`[+] Initial snapshot for guild ${guildId} received, skipping update.`);
       }
       // After the first invocation, set the flag to false so future changes are processed
       isFirstInvocation = false;

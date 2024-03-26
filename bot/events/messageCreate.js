@@ -31,6 +31,8 @@ module.exports = {
 
     // Now were 100% inside the testing channel listening for user input
     // add song to queue
-    await addToQueue(message.guildId, message);
+    await addToQueue(message.guildId, message).then(() => {
+      message.delete();
+    });
 	},
 };
