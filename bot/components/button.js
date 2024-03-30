@@ -1,10 +1,11 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const { AudioPlayerStatus } = require('@discordjs/voice');
+const { player } = require('../helpers/audio_handling/player.js');
 
 // -- Buttons--
 // Pause and Play
-const playPause = new ButtonBuilder()
-  .setCustomId('confirm')
-  .setLabel('⏸')
+const togglePlay = new ButtonBuilder()
+  .setCustomId('togglePlay')
   .setStyle(ButtonStyle.Primary);
 
 // Skip
@@ -38,10 +39,13 @@ const loop = new ButtonBuilder()
   .setStyle(ButtonStyle.Secondary);
 
 // Concatenate all buttons into row
-const actionRow = new ActionRowBuilder()
-  .addComponents(playPause, skip, stop, shuffle, loop);
-
-
 module.exports = {
-  actionRow: actionRow,
+  actionRow: () => {
+    let isPlaying;
+    if (player.state.status === AudioPlayerStatus.Paused || player.state.status === AudioPlayerStatus.Idle || player.state.status === AudioPlayerStatus.AutoPaused) isPlaying = true;
+    else isPlaying = false;
+    const row = new ActionRowBuilder()
+      .addComponents(isPlaying ? togglePlay.setLabel('▶️') : togglePlay.setLabel('⏸'), skip, stop, shuffle, loop);
+    return row;
+  }
 }

@@ -2,6 +2,8 @@ const { Events } = require('discord.js');
 const { createEmbed, logopng, banner } = require('../components/embed.js');
 const { actionRow } = require('../components/button.js');
 const { devTestChannelId } = require('../config.json');
+const { updateEmbed } = require('../helpers/updateEmbed.js');
+const { AudioPlayerStatus } = require('@discordjs/voice');
 
 // Async function to read function from mjs file
 async function listenToQueueChanges(client) {
@@ -30,10 +32,11 @@ module.exports = {
 
           // Creates the embed
           console.log(`[...] Creating embed in ${channel.name}`);
-          await channel.send({ embeds: [createEmbed()], files: [banner, logopng], components: [actionRow] }).then((message) => {
+          await channel.send({ embeds: [createEmbed()], files: [banner, logopng], components: [actionRow(AudioPlayerStatus.Paused)] }).then((message) => {
             console.log(`[+] Sent start embed message in ${channel.name}`);
             console.log(`[...] Sending embed message ID to Firestore for guild ${channel.guildId}`);
             setEmbedMessageId(channel.guildId, message.id);
+            updateEmbed(client, channel.guildId);
           });
         } else {
           console.log(`[!] Channel not found in guild: ${fullGuild.name}`);

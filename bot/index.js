@@ -1,10 +1,11 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, IntentsBitField } = require('discord.js');
 const { token } = require('./config.json');
+const { voiceState } = require('./helpers/audio_handling/voiceState.js');
 
 // Init client intents
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildIntegrations] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildIntegrations, IntentsBitField.Flags.GuildVoiceStates] });
 
 // Load commands from command files
 client.commands = new Collection();
@@ -43,30 +44,40 @@ for (const file of eventFiles) {
 client.login(token);
 
 
+// // Handle exit proceedures 
+// process.stdin.resume(); // so the program will not close instantly
 
-// Handle exit proceedures 
-process.stdin.resume(); // so the program will not close instantly
+// function exitHandler(exitCode) {
+//   console.log(exitCode == 'SIGINT' ? '[!] Ctrl+C Detected' : exitCode == 0 ? '[...] Exiting Program' : `[+] Exit code: ${exitCode}`);
 
-function exitHandler(exitCode) {
-  console.log(exitCode == 'SIGINT' ? '[!] Ctrl+C Detected' : exitCode == 0 ? '[...] Exiting Program' : exitCode);
+//   // On exit to program
+//   if (exitCode == 'SIGINT') {
+// 		// Handle voice player
+// 		if (voiceState.subscription) {
+// 			voiceState.subscription.unsubscribe();
+// 			console.log("[+] Player has been unsubscribed");
+// 		}
 
-  // On exit to program
-  if (exitCode == 0) {
-    console.log("TODO: [...] Sending embed message ID to Firestore")
-    console.log("TODO: [+] Sent embed message ID to Firestore")
-  }
-  process.exit();
-}
+// 		if (voiceState.connection) {
+// 			if (voiceState.connection.disconnect()) console.log("[+] Player disconnected");
+// 			if (voiceState.connection.destroy()) console.log("[+] Connection Destroyed");
+// 		}
 
-// do something when app is closing
-process.on('exit', exitHandler.bind(null));
+//     // console.log("[...] Sending embed message ID to Firestore")
+//     // console.log("[+] Sent embed message ID to Firestore")
+//   }
+//   process.exit(1);
+// }
 
-// catches ctrl+c event
-process.on('SIGINT', exitHandler.bind(null));
+// // do something when app is closing
+// process.on('exit', exitHandler.bind(null));
 
-// catches "kill pid" (for example: nodemon restart)
-process.on('SIGUSR1', exitHandler.bind(null));
-process.on('SIGUSR2', exitHandler.bind(null));
+// // catches ctrl+c event
+// process.on('SIGINT', exitHandler.bind(null));
 
-// catches uncaught exceptions
-process.on('uncaughtException', exitHandler.bind(null));
+// // catches "kill pid" (for example: nodemon restart)
+// process.on('SIGUSR1', exitHandler.bind(null));
+// process.on('SIGUSR2', exitHandler.bind(null));
+
+// // catches uncaught exceptions
+// process.on('uncaughtException', exitHandler.bind(null));

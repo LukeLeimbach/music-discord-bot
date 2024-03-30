@@ -1,4 +1,5 @@
 const { Events } = require('discord.js');
+const { togglePlay } = require('../helpers/audio_handling/togglePlay.js');
 
 // Handle command interactions
 module.exports = {
@@ -25,7 +26,9 @@ module.exports = {
     }
     // Handle button interactions
     else if (interaction.isButton()) {
-      // Update message
+      if (interaction.customId == 'togglePlay') {
+        togglePlay(interaction);
+      }
     };
 	},
 };
