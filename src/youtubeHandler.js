@@ -29,7 +29,9 @@ module.exports = {
     if (obj instanceof YTSearch) {
       return obj.currentPage[0].url;
     } else if (typeof obj === "string") {
+      console.log('1');
       const searchResult = await _(obj);
+      console.log('2');
       return {
         'url': searchResult.currentPage[0].url,
         'song': searchResult.currentPage[0].title,

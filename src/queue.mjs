@@ -8,19 +8,20 @@ export async function getQuerySnapshot(guildID) {
 }
 
 // Adds a song to queue (meant to call getSpotifyInfo for these args)
-export async function addToQueue(guildID, song, artist, thumbnailURL, explicit, duration_s) {
+export async function addToQueue(guildID, url, song, artist, thumbnailURL) {
   console.log("Adding to queue...");
   const db = getDb();
   const queueRef = collection(db, "guilds", guildID, "queue");
   const snapshot = await getDocs(queueRef);
   const order = snapshot.size;
 
+  console.log(`Song: ${song} | artist: ${artist}`)
+
   await setDoc(doc(db, "guilds", guildID, "queue", (artist + '_' + song).replace(/\s/g, "_")), {
+    url: url,
     song: song,
     artist: artist,
     thumbnailURL: thumbnailURL,
-    explicit: explicit,
-    duration_s: duration_s,
     order: order,
   });
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import { setupIonicReact } from '@ionic/react';
+import process from 'process';
+import { Buffer } from 'buffer';
 import './css/Theme.css'
 
 // Ionic CSS imports
@@ -19,6 +21,10 @@ import '@ionic/react/css/typography.css';
 
 // Call setupIonicReact to configure Ionic
 setupIonicReact();
+
+// Adding polyfills for youtube search
+window.process = process;
+window.Buffer = Buffer;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
