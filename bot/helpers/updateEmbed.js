@@ -44,11 +44,11 @@ module.exports = {
           if (queue.length - index == 1) embed.setThumbnail(val.thumbnailURL);
           embed.addFields({
             name: `${queue.length - index == 1 ? '**Now Playing**  => ' : ((queue.length - index) + ')')} ${val.song}`,
-            value: `Artist: ${val.artist} | Duration: ${Math.round(val.duration_s * 100 / 60) / 100} mins | Explicit: ${val.explicit ? 'Yes' : 'No'}`
+            value: `Artist: ${val.artist}`
           });
         });
       }).then(() => {
-        message.edit({ embeds: [embed] }).catch(console.error('[!] Embed message did not update with Firebase queue'));
+        message.edit({ embeds: [embed] });
       });
     }
   }

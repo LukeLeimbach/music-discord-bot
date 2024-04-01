@@ -24,6 +24,7 @@ module.exports = {
         }
       };
     }
+    
     // Handle button interactions
     else if (interaction.isButton()) {
       if (interaction.customId == 'togglePlay') {

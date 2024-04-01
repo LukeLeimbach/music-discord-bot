@@ -1,4 +1,4 @@
-const { createAudioPlayer, NoSubscriberBehavior } = require('@discordjs/voice');
+const { createAudioPlayer, NoSubscriberBehavior, AudioPlayerStatus } = require('@discordjs/voice');
 
 const player = createAudioPlayer({
   behaviors: {
@@ -6,6 +6,12 @@ const player = createAudioPlayer({
   },
   // Enable debug for development
   debug: true,
+});
+
+// Song has finished playing
+player.on(AudioPlayerStatus.Idle, () => {
+  
+  console.log("Song done");
 });
 
 module.exports = {

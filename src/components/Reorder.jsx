@@ -85,8 +85,8 @@ function Reorder() {
                   <IonImg src={item.thumbnailURL}/>
                 </IonThumbnail>
                 <IonLabel>
-                  <h2>{item.song} - {item.artist}</h2>
-                  <p>Explicit: {item.explicit ? 'Yes' : 'No'} | Duration: {item.duration_s} seconds</p>
+                  <h2>Song: {item.song}</h2>
+                  <p>Artist: {item.artist}</p>
                 </IonLabel>
               </div>
               <IonButton slot='end' color={'danger'} fill='outline' onClick={() => handleDeleteClick(item)}>

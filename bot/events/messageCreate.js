@@ -1,15 +1,15 @@
 const { Events } = require('discord.js');
 const { devTestChannelId } = require('../config.json');
 const { isClient } = require('../helpers/isClient.js');
-require('dotenv').config({path:__dirname+'../../../.env'})
+const { getTopVideoInfo } = require('../helpers/youtubeHandler.js');
+require('dotenv').config({path:__dirname+'../../../.env'});
 
 // Dynamic imports to use add messages to queue if typed
 async function addToQueue(guildId, content) {
   const { addToQueue } = await import('../helpers/queue.mjs');
-  const { getSpotifyInfo } = await import('../helpers/spotify.mjs');
 
-  getSpotifyInfo(content).then(({ song, artist, thumbnailURL, explicit, duration_s }) => {
-    addToQueue(guildId, song, artist, thumbnailURL, explicit, duration_s);
+  await getTopVideoInfo(content).then(({ url, song, artist, thumbnailURL }) => {
+    addToQueue(guildId, url, song, artist, thumbnailURL);
   });
 }
 
@@ -31,8 +31,8 @@ module.exports = {
 
     // Now were 100% inside the testing channel listening for user input
     // add song to queue
-    await addToQueue(message.guildId, message).then(() => {
+    await addToQueue(message.guildId, message.content).then(() => {
       message.delete();
     });
 	},
-};
+}

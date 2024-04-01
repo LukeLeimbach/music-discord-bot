@@ -6,7 +6,7 @@ export async function getQuerySnapshot(guildId) {
   return queue;
 }
 
-export async function addToQueue(guildId, song, artist, thumbnailURL, explicit, duration_s) {
+export async function addToQueue(guildId, url, song, artist, thumbnailURL) {
   console.log(`[...] Adding "${song}" to queue`);
   const db = getDb();
   const queueRef = collection(db, "guilds", guildId, "queue");
@@ -14,11 +14,10 @@ export async function addToQueue(guildId, song, artist, thumbnailURL, explicit, 
   const order = snapshot.size;
 
   await setDoc(doc(db, "guilds", guildId, "queue", (artist + '_' + song).replace(/\s/g, "_")), {
+    url: url,
     song: song,
     artist: artist,
     thumbnailURL: thumbnailURL,
-    explicit: explicit,
-    duration_s: duration_s,
     order: order,
   }).then(
     console.log(`[+] Added "${song}" to queue`)
@@ -70,15 +69,18 @@ export async function getEmbedMessageId(guildId) {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Embed Message Id:", docSnap.data().embedMessageId);
       return docSnap.data().embedMessageId; // Returns the embedMessageId field
     } else {
       // doc.data() will be undefined in this case
-      console.log("No such document!");
+      console.log("[!] Failed to find document snapshot");
       return null; // Indicates no document found for that guildId
     }
   } catch (error) {
-    console.error("Error getting document:", error);
+    console.error("[!] Error getting document: ", error);
     return null; // Handle errors or indicate failure
   }
+}
+
+export async function skipSong(guildId) {
+  await deleteQueueItem(guildId, 0)
 }

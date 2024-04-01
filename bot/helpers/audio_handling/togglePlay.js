@@ -13,7 +13,12 @@ module.exports = {
     } else if (player.state.status === AudioPlayerStatus.Paused) {
       res = player.unpause();
     } else if (player.state.status === AudioPlayerStatus.Idle || player.state.status === AudioPlayerStatus.AutoPaused) {
-      joinVoice(interaction);
+      try {
+        joinVoice(interaction);
+        res = true;
+      } catch (err) {
+        console.log('[!] Error in joining voice. ', err)
+      }
     }
 
     if (res) console.log('[+] Good play button interaction');

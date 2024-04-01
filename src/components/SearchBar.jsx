@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IonSearchbar, IonButton } from '@ionic/react';
-import { getSpotifyInfo } from '../spotify.mjs';
 import { addToQueue } from '../queue.mjs';
+import { getTopVideoInfo } from '../youtubeHandler.js';
 import '../css/SearchBar.css';
 
 function SearchBar() {
@@ -15,9 +15,9 @@ function SearchBar() {
 
   async function handleSearchBarValue() {
     console.log("Searchbar value is:", searchBarValue, "| Starting search...")
-    await getSpotifyInfo(searchBarValue).then((spotify_obj) => {
-      console.log("Found Spotify Song...");
-      addToQueue(devTestGuildId, spotify_obj.song, spotify_obj.artist, spotify_obj.thumbnailURL, spotify_obj.explicit, spotify_obj.duration_s)
+    await getTopVideoInfo(searchBarValue).then((obj) => {
+      console.log("Found Youtube Song...");
+      addToQueue(devTestGuildId, obj.url, obj.song, obj.artist, obj.thumbnailURL)
     });
     console.log('Clearing searchbar...')
     setSearchBarValue('');
