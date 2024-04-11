@@ -8,12 +8,6 @@ const player = createAudioPlayer({
   debug: true,
 });
 
-// Song has finished playing
-player.on(AudioPlayerStatus.Idle, () => {
-  
-  console.log("Song done");
-});
-
 module.exports = {
   player: player
 }

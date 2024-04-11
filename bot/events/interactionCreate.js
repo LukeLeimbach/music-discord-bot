@@ -1,5 +1,6 @@
 const { Events } = require('discord.js');
 const { togglePlay } = require('../helpers/audio_handling/togglePlay.js');
+const { skip } = require('../helpers/audio_handling/skip');
 
 // Handle command interactions
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
       if (!command) {
         console.error(`No command matching ${interaction.commandName} was found.`);
         return;
-      };
+      }
   
       try {
         await command.execute(interaction);
@@ -22,7 +23,7 @@ module.exports = {
         } else {
           await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
         }
-      };
+      }
     }
     
     // Handle button interactions

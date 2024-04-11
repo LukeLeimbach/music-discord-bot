@@ -1,0 +1,25 @@
+@startuml Skip Functionality
+|Discord|
+:Press Skip Button;
+|Firestore|
+if (Does a queue exist\n            (aka)\nIs there a next song?) then (no)
+  |Discord|
+  :Call player.stop();
+  :Destroy Player (if exists);
+  stop
+else (yes)
+  |Firestore|
+  :Call skip function();
+  |Discord|
+  :Call player.stop();
+  :Create next song resource;
+  if (player.checkPlayable()) then (false)
+    :Log error and destroy player;
+    :Establish new subscription / connection;
+    :Call play();
+    stop
+  else (true)
+    :Call play();
+    stop
+endif
+@enduml

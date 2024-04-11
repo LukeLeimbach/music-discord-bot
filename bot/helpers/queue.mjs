@@ -1,9 +1,15 @@
-import { collection, getDocs, query, where, deleteDoc, doc, setDoc, getDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, deleteDoc, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import getDb from './firebaseConfig.mjs';
 
 export async function getQuerySnapshot(guildId) {
   const queue = await getDocs(collection(getDb(), "guilds", guildId, "queue"));
   return queue;
+}
+
+export async function getQueue(guildId) {
+  getQuerySnapshot(guildId).then(snapshot => {
+    return snapshot.docs;
+  })
 }
 
 export async function addToQueue(guildId, url, song, artist, thumbnailURL) {
@@ -81,6 +87,20 @@ export async function getEmbedMessageId(guildId) {
   }
 }
 
-export async function skipSong(guildId) {
-  await deleteQueueItem(guildId, 0)
+export async function skipInQueue(interaction) {
+  const guildId = interaction.guildId;
+  const db = getDb();
+  const snapshot = await getQuerySnapshot(guildId);
+
+  if (!snapshot.empty) {
+    // Assuming the first document is the current song
+    await deleteDoc(doc(db, "guilds", guildId, "queue", snapshot.docs[0].id));
+
+    // Process remaining documents
+    const remainingDocs = snapshot.docs.slice(1); // Skip the first doc
+    for (const document of remainingDocs) {
+      const newOrder = document.data().order - 1;
+      await updateDoc(document.ref, { order: newOrder });
+    }
+  }
 }

@@ -1,0 +1,34 @@
+@startuml Uninterupted Play Functionality
+|Discord|
+:User presses play for first time;
+:Check for Player subscription / connection and destroy;
+|Firestore|
+if (Does queue exist?) then (no)
+  |Discord|
+  :Log and send ephemeral error;
+  stop
+else (yes)
+  |Discord|
+  :Create Player subscription / connection;
+  :Create Audio resource from YT;
+  :Connect and play\n__assume no further user interaction__;
+  :**Song finishes**;
+  |Firestore|
+  if (Does queue exist?) then (no)
+    |Discord|
+    :Call Player.stop();
+    :Destroy Player + connection / subscription;
+    stop
+  else (WHILE yes)
+    if (player.checkPlayable()) then (false)
+      :Destroy resource, player,\nconnection, and subscription;
+      :Call play;
+      stop
+    else (true)
+      :Create audio resource and Player.play();
+      stop
+    endif
+  endif
+endif
+
+@enduml

@@ -1,6 +1,5 @@
-const { AudioPlayerStatus, createAudioResource, joinVoiceChannel } = require('@discordjs/voice');
+const { AudioPlayerStatus } = require('@discordjs/voice');
 const { player } = require('./player.js');
-const { joinVoice } = require('./joinVoice.js');
 const { actionRow } = require('../../components/button.js');
 
 module.exports = {
@@ -14,7 +13,7 @@ module.exports = {
       res = player.unpause();
     } else if (player.state.status === AudioPlayerStatus.Idle || player.state.status === AudioPlayerStatus.AutoPaused) {
       try {
-        joinVoice(interaction);
+        // TODO: Implement play here
         res = true;
       } catch (err) {
         console.log('[!] Error in joining voice. ', err)
