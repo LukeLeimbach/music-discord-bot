@@ -8,9 +8,9 @@ module.exports = {
 
     let res = false;
     if (player.state.status === AudioPlayerStatus.Playing) {
-      res = player.pause(interpolateSilence=true);
+      res = await player.pause(interpolateSilence=true);
     } else if (player.state.status === AudioPlayerStatus.Paused) {
-      res = player.unpause();
+      res = await player.unpause();
     } else if (player.state.status === AudioPlayerStatus.Idle || player.state.status === AudioPlayerStatus.AutoPaused) {
       try {
         // TODO: Implement play here
@@ -24,6 +24,6 @@ module.exports = {
     else console.log('[!] Bad play button interaction');
 
     // Update action row to reflect changes in player
-    interaction.update({ components: [actionRow()] });
+    await interaction.update({ components: [actionRow()] });
   },
 };

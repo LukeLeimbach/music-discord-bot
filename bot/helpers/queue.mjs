@@ -7,9 +7,16 @@ export async function getQuerySnapshot(guildId) {
 }
 
 export async function getQueue(guildId) {
-  getQuerySnapshot(guildId).then(snapshot => {
-    return snapshot.docs;
-  })
+  // Return the promise returned by getQuerySnapshot
+  return getQuerySnapshot(guildId)
+    .then(snapshot => {
+      // Extract and return the array of documents from the snapshot
+      return snapshot.docs;
+    })
+    .catch(err => {
+      console.error("Error getting queue:", err);
+      return []; // Return an empty array in case of error
+    });
 }
 
 export async function addToQueue(guildId, url, song, artist, thumbnailURL) {
@@ -93,14 +100,20 @@ export async function skipInQueue(interaction) {
   const snapshot = await getQuerySnapshot(guildId);
 
   if (!snapshot.empty) {
-    // Assuming the first document is the current song
-    await deleteDoc(doc(db, "guilds", guildId, "queue", snapshot.docs[0].id));
+    // Get the top queue item (order of 0)
+    const topQueueItem = snapshot.docs.find(doc => doc.data().order === 0);
 
-    // Process remaining documents
-    const remainingDocs = snapshot.docs.slice(1); // Skip the first doc
-    for (const document of remainingDocs) {
-      const newOrder = document.data().order - 1;
-      await updateDoc(document.ref, { order: newOrder });
+    if (topQueueItem) {
+      // Delete the top queue item
+      await deleteDoc(doc(db, "guilds", guildId, "queue", topQueueItem.id));
+
+      // Process remaining documents
+      for (const document of snapshot.docs) {
+        if (document.id !== topQueueItem.id) {
+          const newOrder = document.data().order - 1;
+          await updateDoc(document.ref, { order: newOrder });
+        }
+      }
     }
   }
 }

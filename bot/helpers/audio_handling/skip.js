@@ -1,24 +1,22 @@
 const { player } = require('./player');
-const { playerInfo } = require('./playerInfo');
+const { play } = require('./play');
 
-export async function skip(interaction) {
-  const { skipInQueue, getQueue } = await import('../queue.mjs');
-
-  getQueue(interaction.guildId).then(queue => {
-    if (queue.exists() && queue.length > 0) {
-      skipInQueue(interaction).then(() => {
+module.exports = {
+  skip: async (interaction) => {
+    const { skipInQueue, getQueue } = await import('../queue.mjs');
+    
+    const queue = await getQueue(interaction.guildId);
+    console.log(`Queue: ${queue}`);
+    if (queue.length > 0) {
+      skipInQueue(interaction).then((nextSong) => {
         console.log('[+] Queue successfully skipped');
-        play(queue, interaction);
+        play(interaction);
       }).catch(err => {
         console.error('[!] Error in queue skip: ', err);
       });
     } else {
       console.warn('[-] Queue does not exist! Destroying player and resource');
       player.stop();
-      playerInfo.connection = null;
-      playerInfo.subscription = null;
     }
-  }).catch(err => {
-    console.error('[!] Error in getting queue: ', err);
-  });
+  }
 }

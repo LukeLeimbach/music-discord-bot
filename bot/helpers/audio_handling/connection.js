@@ -1,42 +1,36 @@
-const { createAudioResource, joinVoiceChannel, VoiceConnection } = require('@discordjs/voice');
-
-const playerInfo = {
-  connection: null,
-  subscription: null,
-}
+const { joinVoiceChannel, VoiceConnection, getVoiceConnection  } = require('@discordjs/voice');
+const { player } = require('./player');
+const { BaseInteraction } = require('discord.js');
 
 module.exports = {
-  playerInfo: playerInfo,
-
   /**
    * Creates a new connection based on interaction
    * 
    * @param {BaseInteraction} interaction 
-   * @returns {VoiceConnection}
+   * @returns {VoiceConnection | undefined}
    */
-  createConnection: async (interaction) => {
+  createConnection: (interaction) => {
     // Ensure user is in a voice channel
-    if (!interaction.voiceChannel.exists()) {
+    if (!interaction.member.voice.channel) {
       console.error('[!] Tried to create connection without voice channel');
+      return;
     }
 
-    const vc = interaction.voiceChannel;
+    const vc = interaction.member.voice.channel;
     let connection;
 
     try {
       connection = joinVoiceChannel({
-        channelId: vc,
+        channelId: vc.id,
         guildId: interaction.guildId,
         adapterCreator: vc.guild.voiceAdapterCreator
       });
+      console.log('[+] Successfully created connection')
+      return connection
     } catch (err) {
       console.error('[!] Error creating connection: ', err);
-      playerInfo.connection = null;
-      return null;
+      return undefined;
     }
-
-    playerInfo.connection = connection;
-    return connection;
   },
 
   /**
@@ -44,7 +38,7 @@ module.exports = {
    * 
    * @param {VoiceConnection} connection 
    */
-  destroyConnection: async (connection) => {
+  destroyConnection: (connection) => {
     try {
       connection.disconnect();
       console.log('[+] Disconnected from connection')
@@ -60,6 +54,26 @@ module.exports = {
       console.error('[!] Could not destroy connection: ', err);
       return false;
     }
-    
+  },
+
+  /**
+   * Creates a subscription to the connection.
+   * 
+   * @param {VoiceConnection} connection Guild's voice connection
+   * @returns subscription
+   */
+  createSubscription: (connection) => {
+    // Create new subscription
+    if (!(connection instanceof VoiceConnection)) {
+      console.error('[!] Cannot create subscription because connection is not VoiceConnection!');
+    }
+    try {
+      const subscription = connection.subscribe(player);
+      console.log('[+] Subscription created successfully');
+      return subscription;
+  } catch (err) {
+      console.error('[!] Error creating subscription:', err);
+      return null;
+  }
   }
 }

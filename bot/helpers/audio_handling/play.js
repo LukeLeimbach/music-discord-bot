@@ -1,16 +1,27 @@
+const { getVoiceConnection } = require('@discordjs/voice');
 const { player } = require('./player');
-const { playerInfo, createConnection } = require('./connection');
+const { createConnection, createSubscription } = require('./connection');
+const { getResource } = require('./audioResource');
+const { actionRow } = require('../../components/button.js');
 
 module.exports = {
-  play: (queue, interaction) => {
+  play: async (interaction) => {
     // Stops playing (in case it isn't already) and destroys audio resource
-    player.stop();
+    if (!player.stop()) console.error('[!] Player could not be stopped!');
 
-    // Creates a new connection
-    if (!playerInfo.connection) {
-      createConnection(interaction);
-      createSubscription(playerInfo.connection);
+    // Create new connection
+    if (!getVoiceConnection(interaction.guildId)) {
+      const connection = createConnection(interaction)
+      if (!connection) {
+        await interaction.reply({ content: 'Join a vc dumbass', ephemeral: true });
+        return;
+      }
+      createSubscription(connection);
     }
+  
+    const resource = await getResource(interaction);
 
+    player.play(resource);
+    await interaction.update({ components: [actionRow()] });
   }
 }

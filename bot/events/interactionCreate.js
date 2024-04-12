@@ -1,6 +1,9 @@
 const { Events } = require('discord.js');
+const { AudioPlayerStatus } = require('@discordjs/voice');
 const { togglePlay } = require('../helpers/audio_handling/togglePlay.js');
 const { skip } = require('../helpers/audio_handling/skip');
+const { play } = require('../helpers/audio_handling/play');
+const { player } = require('../helpers/audio_handling/player.js');
 
 // Handle command interactions
 module.exports = {
@@ -28,9 +31,23 @@ module.exports = {
     
     // Handle button interactions
     else if (interaction.isButton()) {
+      // Handle play button
       if (interaction.customId == 'togglePlay') {
-        togglePlay(interaction);
+        const s = player.state.status;
+        if (s === AudioPlayerStatus.Idle) {
+          console.log('[+] Initial play pressed');
+          await play(interaction);
+        }
+        else if (s === AudioPlayerStatus.Paused || s === AudioPlayerStatus.Playing) {
+          console.log('[+] Toggle play pressed');
+          await togglePlay(interaction);
+        }
       }
-    };
+
+      // Handle skip button
+      else if (interaction.customId == 'skip') {
+        await skip(interaction);
+      }
+    }
 	},
-};
+}

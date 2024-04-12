@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, IntentsBitField } = require('discord.js');
 const { token } = require('./config.json');
-const { voiceState } = require('./helpers/audio_handling/voiceState.js');
+const { playerInfo } = require('./helpers/audio_handling/connection.js');
 
 // Init client intents
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildIntegrations, IntentsBitField.Flags.GuildVoiceStates] });
