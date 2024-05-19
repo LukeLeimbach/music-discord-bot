@@ -16,7 +16,6 @@ export const listenToQueueChanges = (client) => {
       // Process changes only if it's not the first invocation
       if (!isFirstInvocation) {
         snapshot.docChanges().forEach(change => {
-          console.log('[...] Updating embed')
           updateEmbed(client, guildId).then(() => {
             console.log('[+] Embed Updated');
           });

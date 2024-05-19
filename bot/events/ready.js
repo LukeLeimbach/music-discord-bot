@@ -5,21 +5,14 @@ const { devTestChannelId } = require('../config.json');
 const { updateEmbed } = require('../helpers/updateEmbed.js');
 const { AudioPlayerStatus } = require('@discordjs/voice');
 
-// Async function to read function from mjs file
-async function listenToQueueChanges(client) {
-  const { listenToQueueChanges } = await import('../helpers/queueChangeListener.mjs');
-  return listenToQueueChanges(client);
-}
-
-async function setEmbedMessageId(guildId, messageId) {
-  const { setEmbedMessageId } = await import('../helpers/queue.mjs');
-  await setEmbedMessageId(guildId, messageId);
-}
-
 module.exports = {
   name: Events.ClientReady,
   once: true,
   async execute(client) {
+    // Import modules
+    const { listenToQueueChanges } = await import('../helpers/queueChangeListener.mjs');
+    const { setEmbedMessageId } = await import('../helpers/queue.mjs');
+
     // For each guild
     client.guilds.cache.forEach(async (guild) => {
       // Clear the text channel when ready (currently dev testing channel)
