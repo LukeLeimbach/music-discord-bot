@@ -1,6 +1,7 @@
 const { youtubeApiKey } = require('../config.json');
 const { YTSearcher, YTSearch } = require('ytsearcher');
 
+
 async function _(query) {
   try {
     const searcher = new YTSearcher(youtubeApiKey);

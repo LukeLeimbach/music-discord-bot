@@ -1,7 +1,7 @@
 const { getVoiceConnection } = require('@discordjs/voice');
-const { player } = require('./player');
-const { createConnection, createSubscription } = require('./connection');
-const { getResource } = require('./audioResource');
+const { player } = require('./player.js');
+const { createConnection, createSubscription } = require('./connection.js');
+const { getResource } = require('./audioResource.js');
 const { actionRow } = require('../../components/button.js');
 
 module.exports = {

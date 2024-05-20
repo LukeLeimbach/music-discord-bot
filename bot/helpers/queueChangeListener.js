@@ -1,10 +1,10 @@
-import { collection, query, onSnapshot } from "firebase/firestore";
-import getDb from "./firebaseConfig.mjs";
-import { updateEmbed } from '../helpers/updateEmbed.js';
+const { collection, query, onSnapshot } = require("firebase/firestore");
+const getDb = require("./firebaseConfig.js");
+const { updateEmbed } = require('./updateEmbed.js');
 
 const db = getDb();
 
-export const listenToQueueChanges = (client) => {
+module.exports.listenToQueueChanges = (client) => {
   client.guilds.cache.forEach(guild => {
     const guildId = guild.id;
     // Flag to track the first invocation of the snapshot listener for each guild

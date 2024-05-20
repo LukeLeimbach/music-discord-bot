@@ -45,7 +45,7 @@
     "eslint-webpack-plugin": "^3.1.1",
     "ffmpeg-static": "^5.2.0",
     "file-loader": "^6.2.0",
-    "firebase": "^10.8.1",
+    "firebase": "^10.12.0",
     "firebase-admin": "^12.0.0",
     "fs-extra": "^10.0.0",
     "html-webpack-plugin": "^5.5.0",
@@ -118,7 +118,10 @@
   },
   "devDependencies": {
     "@capacitor/cli": "5.7.1",
-    "react-test-renderer": "^18.2.0"
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0",
+    "react-test-renderer": "^18.2.0",
+    "sinon": "^18.0.0"
   },
   "jest": {
     "roots": [
