@@ -16,7 +16,6 @@ class FirestoreController {
   /**
    * Updates the embed message for a specific guild.
    * 
-   * @param {string} guildID - The ID of the guild.
    * @param {string} messageID - Updated message ID.
    * @returns {Promise<boolean>} A promise that resolves to true if the message was successfully updated, false otherwise.
    */
@@ -27,7 +26,6 @@ class FirestoreController {
   /**
    * Updates the embed message for a specific guild.
    * 
-   * @param {string} guildID - The ID of the guild.
    * @param {string} textChannelID - Updated text channel ID.
    * @returns {Promise<boolean>} A promise that resolves to true if the text channel was successfully updated, false otherwise.
    */
@@ -38,7 +36,6 @@ class FirestoreController {
   /**
    * Gets the client text channel for a specific guild.
    * 
-   * @param {string} guildID - The ID of the guild.
    * @returns {Promise<TextChannel>} A promise that resolves to the text channel object.
    */
   async getClientTextChannel() {
@@ -48,7 +45,6 @@ class FirestoreController {
   /**
    * Gets the embed message for a specific guild.
    * 
-   * @param {string} guildID - The ID of the guild.
    * @returns {Promise<Message>} A promise that resolves to the message object.
    */
   async getEmbedMessage() {
