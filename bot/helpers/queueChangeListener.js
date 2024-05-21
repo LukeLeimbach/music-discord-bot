@@ -1,10 +1,14 @@
 const { collection, query, onSnapshot } = require("firebase/firestore");
-const getDb = require("./firebaseConfig.js");
+const { db } = require('./firestoreController.js');
 const { updateEmbed } = require('./updateEmbed.js');
 
-const db = getDb();
 
-module.exports.listenToQueueChanges = (client) => {
+/**
+ * Listens to changes in the queue collection for each guild and updates the embed accordingly.
+ * 
+ * @param {Discord.Client} client - The Discord client object.
+ */
+function listenToQueueChanges(client) {
   client.guilds.cache.forEach(guild => {
     const guildId = guild.id;
     // Flag to track the first invocation of the snapshot listener for each guild
@@ -29,3 +33,7 @@ module.exports.listenToQueueChanges = (client) => {
     });
   });
 };
+
+module.exports = {
+  listenToQueueChanges: listenToQueueChanges,
+}

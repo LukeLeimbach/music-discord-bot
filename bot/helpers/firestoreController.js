@@ -280,7 +280,7 @@ async function _test() {
     "song": "TEST",
     "thumbnailURL": "TEST",
     "url": "TEST"
-  };
+  }
 
   const targetGuildID = allGuilds[0];
   console.log(`[...] Testing _getQueueDocRef with ${targetGuildID}`);
@@ -324,6 +324,7 @@ _test();
 
 
 module.exports = {
+  db: db,
   enqueue: enqueue,
   dequeue: dequeue,
   getQueue: getQueue,

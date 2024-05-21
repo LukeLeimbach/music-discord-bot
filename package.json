@@ -17,6 +17,7 @@
     "@ionic/cli": "^7.2.0",
     "@ionic/react": "^7.7.4",
     "@ionic/react-router": "^7.7.3",
+    "@jest/globals": "^29.7.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@spotify/web-api-ts-sdk": "^1.2.0",
     "@svgr/webpack": "^5.5.0",
