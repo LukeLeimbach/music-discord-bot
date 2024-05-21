@@ -139,7 +139,7 @@ async function _validateQueue(guildID) {
  * Enqueues a song for a specific guild.
  * 
  * @param {string} guildID - The ID of the guild.
- * @param {object} song - The song object to enqueue.
+ * @param {Object} song - The song object to enqueue.
  * @returns {Promise<boolean>} - A promise that resolves to true if the song was successfully enqueued, false otherwise.
  */
 async function enqueue(guildID, song) {

@@ -1,32 +1,66 @@
 const { enqueue, dequeue, getQueue, destroyQueue, queueLen } = require('./firestoreController.js');
 
+/**
+ * Represents a queue controller for managing song queues in a guild.
+ */
 class QueueController {
+  /**
+   * Constructs a new QueueController instance.
+   * @param {string} guildID - The ID of the guild.
+   */
   constructor(guildID) {
-    this.guildID = guildID;
+    this.guildID = guildID.toString();
   }
 
+  /**
+   * Enqueues a song to the guild's queue.
+   * 
+   * @param {Object} Song - The song to enqueue.
+   * @returns {Promise} A promise that resolves when the song is enqueued.
+   */
   async enqueue(song) {
     return await enqueue(this.guildID, song);
   }
 
-  async dequeue(peek = false) {
+  /**
+   * Dequeues a song from the guild's queue.
+   * 
+   * @param {boolean} [peek=false] - Whether to peek at the next song without removing it.
+   * @returns {Promise} A promise that resolves with the dequeued song.
+   */
+  async dequeue(peek=false) {
     return await dequeue(this.guildID, peek);
   }
 
+  /**
+   * Retrieves the guild's current queue.
+   * 
+   * @returns {Promise} A promise that resolves with the guild's queue.
+   */
   async getQueue() {
     return await getQueue(this.guildID);
   }
 
+  /**
+   * Destroys the guild's queue.
+   * 
+   * @returns {Promise} A promise that resolves when the queue is destroyed.
+   */
   async destroyQueue() {
     return await destroyQueue(this.guildID);
   }
 
+  /**
+   * Retrieves the length of the guild's queue.
+   * 
+   * @returns {Promise} A promise that resolves with the length of the queue.
+   */
   async queueLen() {
     return await queueLen(this.guildID);
   }
 }
 
-module.exports = QueueController;
+module.exports = { QueueController };
 
 
 async function __test__() {
