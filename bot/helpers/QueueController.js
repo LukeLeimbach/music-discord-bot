@@ -1,4 +1,4 @@
-const { enqueue, dequeue, getQueue, destroyQueue, queueLen } = require('./firestoreController.js');
+const { enqueue, dequeue, getQueue, destroyQueue, queueLen } = require('./firestoreCommands.js');
 
 /**
  * Represents a queue controller for managing song queues in a guild.

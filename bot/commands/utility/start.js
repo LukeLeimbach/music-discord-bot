@@ -11,6 +11,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('start')
 		.setDescription('Tests the embed.'),
+		
 	async execute(interaction) {
 		interaction.channel.send({ embeds: [createEmbed()], files: [banner, logopng] }).then((message) => {
 			console.log('[+] Sent start embed message')
