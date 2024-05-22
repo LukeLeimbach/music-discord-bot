@@ -13,6 +13,28 @@ class Song {
     this.thumbnailUrlDefault = searchResult.thumbnails.default.url;
     this.thumbnailUrlHigh = searchResult.thumbnails.high.url;
     this.channelTitle = searchResult.channelTitle;
+    this.firebaseID = `${this.id}_${this.title}`.replace(/\s/g, '_');
+  }
+
+  /**
+   * Returns an object representation of the Song instance suitable for storing in Firebase.
+   * 
+   * @returns {Object} The object representation of the Song instance.
+   */
+  forFirebase() {
+    return {
+      kind: this.kind,
+      url: this.url,
+      id: this.id,
+      publishedAt: this.publishedAt,
+      channelId: this.channelId,
+      title: this.title,
+      description: this.description,
+      thumbnailUrlDefault: this.thumbnailUrlDefault,
+      thumbnailUrlHigh: this.thumbnailUrlHigh,
+      channelTitle: this.channelTitle,
+      firebaseID: this.firebaseID,
+    };
   }
 
   /**

@@ -1,4 +1,10 @@
-const { updateEmbedMessageID, updateClientTextChannelID, getClientTextChannel, getEmbedMessage } = require('./firestoreCommands.js');
+const {
+  updateEmbedMessageID,
+  updateClientTextChannelID,
+  getClientTextChannel,
+  getEmbedMessage,
+  __test_firestore_controller__,
+} = require('./firestoreCommands.js');
 
 /**
  * Represents a FirestoreController for managing data in Firestore.
@@ -7,10 +13,11 @@ class FirestoreController {
   /**
    * Creates a new instance of FirestoreController.
    * 
-   * @param {string} guildID - The ID of the guild.
+   * @param {PlayerController} playerController - The supervising PlayerController instance.
    */
-  constructor(guildID) {
-    this.guildID = guildID;
+  constructor(playerController) {
+    this.playerController = playerController;
+    this.guildID = playerController.guildID;
   }
 
   /**
@@ -36,7 +43,7 @@ class FirestoreController {
   /**
    * Gets the client text channel for a specific guild.
    * 
-   * @returns {Promise<TextChannel>} A promise that resolves to the text channel object.
+   * @returns {Promise<TextChannel|null>} The ID of the client text channel, or null if not found or encountered an error.
    */
   async getClientTextChannel() {
     return await getClientTextChannel(this.guildID);
@@ -49,6 +56,13 @@ class FirestoreController {
    */
   async getEmbedMessage() {
     return await getEmbedMessage(this.guildID);
+  }
+
+  /**
+   * Test function for FirestoreController.
+   */
+  async __test__() {
+    await __test_firestore_controller__();
   }
 }
 

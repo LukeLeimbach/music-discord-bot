@@ -1,4 +1,12 @@
-const { enqueue, dequeue, getQueue, destroyQueue, queueLen } = require('./firestoreCommands.js');
+const {
+  enqueue,
+  dequeue,
+  getQueue,
+  destroyQueue,
+  queueLen,
+  __test_guild_controller__,
+} = require('./firestoreCommands.js');
+
 
 /**
  * Represents a queue controller for managing song queues in a guild.
@@ -6,10 +14,12 @@ const { enqueue, dequeue, getQueue, destroyQueue, queueLen } = require('./firest
 class QueueController {
   /**
    * Constructs a new QueueController instance.
-   * @param {string} guildID - The ID of the guild.
+   * @param {PlayerController} playerController - The supervising PlayerController instance.
    */
-  constructor(guildID) {
-    this.guildID = guildID.toString();
+  constructor(playerController) {
+    this.playerController = playerController;
+    this.guildID = playerController.guildID;
+    this.isLoop = false; //TODO: Implement loop feature
   }
 
   /**
@@ -57,6 +67,13 @@ class QueueController {
    */
   async queueLen() {
     return await queueLen(this.guildID);
+  }
+
+  /**
+   * Test function for QueueController.
+   */
+  async __test__() {
+    await __test_guild_controller__();
   }
 }
 
@@ -115,4 +132,4 @@ async function __test__() {
   console.log('[+] Tests completed successfully');
 }
 
-__test__();
+// __test__();

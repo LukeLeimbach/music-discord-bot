@@ -4,7 +4,7 @@ const { Message, TextChannel } = require('discord.js');
 const path = require('path');
 
 // Read the firebaseConfig.json file
-const serviceAccount = require(path.resolve(__dirname, '../firebaseConfig.json'));
+const serviceAccount = require(path.resolve(__dirname, '../../firebaseConfig.json'));
 
 // Initialize Firebase app
 initializeApp({
@@ -26,24 +26,6 @@ const db = getFirestore();
 function _validateGuildID(guildID) {
   if (!guildID || 19 > guildID.length > 18 ) return false;
   return true;
-}
-
-
-/**
- * Retrieves all guild IDs from the Firestore database.
- * 
- * @returns {Promise<string[]>} An array of guild IDs.
- */
-async function _getAllGuildIDs() {
-  try {
-    const guildsRef = db.collection('guilds');
-    const snapshot = await guildsRef.get();
-    const guildIDs = snapshot.docs.map(doc => doc.id);
-    return guildIDs;
-  } catch (error) {
-    console.error('[-] Error in _getAllGuildIDs, Unable to get Guild IDs:', error);
-    return null;
-  }
 }
 
 
@@ -124,7 +106,7 @@ async function _validateQueue(guildID) {
 
     // Update the queue collection based on the sorted queue
     for (let i = 0; i < queue.length; i++) {
-      const docID = `${queue[i].song}_${queue[i].artist}`.replace(/\s/g, '_');
+      const docID = queue[i].firebaseID;
       const docRef = _getQueueDocRef(guildID).doc(docID);
       batch.update(docRef, { order: i });
     }
@@ -132,7 +114,7 @@ async function _validateQueue(guildID) {
     await batch.commit();
     return true;
   } catch (error) {
-    console.error('[-] Error in validateQueueOrder:', error);
+    console.error('[-] Error in _validateQueue:', error);
     return false;
   }
 }
@@ -142,11 +124,17 @@ async function _validateQueue(guildID) {
  * Enqueues a song for a specific guild.
  * 
  * @param {string} guildID - The ID of the guild.
- * @param {Object} song - The song object to enqueue.
+ * @param {Song} song - The song object to enqueue.
  * @returns {Promise<boolean>} A promise that resolves to true if the song was successfully enqueued, false otherwise.
  */
 async function enqueue(guildID, song) {
-  const queueSnapshot = _getQueueSnapshot(guildID);
+  // Ensure that the song is valid before enqueueing
+  if (!song || !song.isValid()) {
+    console.error('[-] Error in enqueue, Invalid song:', song);
+    return false;
+  }
+
+  const queueSnapshot = await _getQueueSnapshot(guildID);
   const queueDocRef = _getQueueDocRef(guildID);
   if (!queueSnapshot) {
     console.error('[-] Error in enqueue, Invalid queueDocRef:', queueSnapshot);
@@ -156,8 +144,8 @@ async function enqueue(guildID, song) {
   song.order = await _getLastQueueOrder(guildID);
   
   try {
-    const docID = `${song.song}_${song.artist}`.replace(/\s/g, '_');
-    await queueDocRef.doc(docID).set(song);
+    const docID = song.firebaseID;
+    await queueDocRef.doc(docID).set(song.forFirebase());
     return true;
   } catch (error) {
     console.error('[-] Error in enqueue, Unable to queue song:', error);
@@ -288,7 +276,7 @@ function _getGuildDocRef(guildID) {
 async function updateEmbedMessageID(guildID, message) {
   const guildDocRef = _getGuildDocRef(guildID);
   if (!guildDocRef) {
-    console.error('[-] Error in updateEmbedMessage, Invalid guildDocRef:', guildDocRef);
+    console.error('[-] Error in updateEmbedMessageID, Invalid guildDocRef:', guildDocRef);
     return false;
   }
 
@@ -296,7 +284,7 @@ async function updateEmbedMessageID(guildID, message) {
     await guildDocRef.update({ embedMessage: message });
     return true;
   } catch (error) {
-    console.error('[-] Error in updateEmbedMessage, Unable to update embed message:', error);
+    console.error('[-] Error in updateEmbedMessageID, Unable to update embed message:', error);
     return false;
   }
 }
@@ -312,7 +300,7 @@ async function updateEmbedMessageID(guildID, message) {
 async function updateClientTextChannelID(guildID, textChannel) {
   const guildDocRef = _getGuildDocRef(guildID);
   if (!guildDocRef) {
-    console.error('[-] Error in updateEmbedMessage, Invalid guildDocRef:', guildDocRef);
+    console.error('[-] Error in updateClientTextChannelID, Invalid guildDocRef:', guildDocRef);
     return false;
   }
 
@@ -320,7 +308,7 @@ async function updateClientTextChannelID(guildID, textChannel) {
     await guildDocRef.update({ clientTextChannel: textChannel });
     return true;
   } catch (error) {
-    console.error('[-] Error in updateEmbedMessage, Unable to update client text channel:', error);
+    console.error('[-] Error in updateClientTextChannelID, Unable to update client text channel:', error);
     return false;
   }
 }
@@ -374,22 +362,7 @@ async function getEmbedMessage(guildID) {
 }
 
 
-module.exports = {
-  db: db,
-  enqueue: enqueue,
-  dequeue: dequeue,
-  getQueue: getQueue,
-  destroyQueue: destroyQueue,
-  queueLen : queueLen,
-  updateEmbedMessage: updateEmbedMessageID,
-  updateClientTextChannel: updateClientTextChannelID,
-  getClientTextChannel: getClientTextChannel,
-  getEmbedMessage: getEmbedMessage,
-}
-
-
 // ------------------- TESTING ------------------- //
-// TODO: Add unit testing for FirestoreController functions
 
 /**
  * A test function for firestoreController.js
@@ -406,49 +379,34 @@ module.exports = {
  * - destroyQueue
  */
 async function __test_guild_controller__() {
-  console.log('[...] Testing _getAllGuilds')
-  allGuilds = await _getAllGuildIDs();
+  const { youtubeHandler } = require('./YoutubeHandler.js');
 
-  const testSong = {
-    "artist": `Test Track ${Math.floor(Math.random() * 100)}${Math.floor(Math.random() * 100)}${Math.floor(Math.random() * 100)}`,
-    "order": 0,
-    "song": "TEST",
-    "thumbnailURL": "TEST",
-    "url": "TEST"
-  }
+  const testSong = await youtubeHandler.getTopVideoInfo('test')
 
-  const targetGuildID = allGuilds[0];
-  console.log(`[...] Testing _getQueueDocRef with ${targetGuildID}`);
+  const targetGuildID = '261601676941721602';
   const queueDocRef = _getQueueDocRef(targetGuildID);
+  console.log('[+] Queue Doc Ref created successfully');
 
-  console.log(`[...] Testing _getQueueSnapshot with ${targetGuildID}`);
   const queueSnapshot = await _getQueueSnapshot(targetGuildID);
+  console.log('[+] Queue Snapshot created successfully');
 
-  console.log(`[...] Testing getQueue with ${targetGuildID}`);
   const queue = await getQueue(targetGuildID);
   const originalQueueLen = queue.length;
   console.log('[+] Original queue:', queue);
 
-  console.log(`[...] Testing _getLastQueueOrder with ${targetGuildID}`);
   const lastOrder = await _getLastQueueOrder(targetGuildID);
   console.log('[+] Order', lastOrder, 'with queue size', queue.length);
 
-  console.log(`[...] Testing enqueue with ${targetGuildID}`);
   const didEnqueue = await enqueue(targetGuildID, testSong);
-  const newQueueLen = await (await getQueue(targetGuildID)).length
-  console.log('- Original Queue length:', originalQueueLen);
-  console.log('------ New Queue length:', newQueueLen);
+  const newQueue = await getQueue(targetGuildID);
+  const newQueueLen = newQueue.length;
   (newQueueLen == originalQueueLen + 1 && didEnqueue)
     ? console.log('[+] New Song added correctly')
     : console.error('[-] New song added incorrectly');
 
-  console.log('[+] Final Queue:', await getQueue(targetGuildID));
-
-  console.log(`[...] Testing dequeue with ${targetGuildID}`);
   const firstSong = await dequeue(targetGuildID);
-  console.log('[+] Dequeued:', firstSong);
+  console.log('[+] Dequeued successfully');
 
-  console.log(`[...] Testing destroyQueue with ${targetGuildID}`);
   const didDestroyQueue = await destroyQueue(targetGuildID);
   didDestroyQueue
     ? console.log('[+] Queue destroyed successfully')
@@ -457,34 +415,45 @@ async function __test_guild_controller__() {
   console.log('[+] GuildController tests completed successfully!');
 }
 
-__test_guild_controller__();
-
 async function __test_firestore_controller__() {
   const guildID = '261601676941721602'; // Wall Moment Guild ID
   const messageID = '123456789012345678';
   const textChannelID = '123456789012345678';
 
-  console.log('[...] Testing updateEmbedMessage');
   const didUpdateEmbedMessage = await updateEmbedMessageID(guildID, messageID);
   didUpdateEmbedMessage
     ? console.log('[+] Embed message updated successfully')
     : console.error('[-] Embed message did not update successfully');
 
-  console.log('[...] Testing updateClientTextChannel');
   const didUpdateClientTextChannel = await updateClientTextChannelID(guildID, textChannelID);
   didUpdateClientTextChannel
     ? console.log('[+] Client text channel updated successfully')
     : console.error('[-] Client text channel did not update successfully');
 
-  console.log('[...] Testing getClientTextChannel');
   const clientTextChannel = await getClientTextChannel(guildID);
   console.log('[+] Client text channel:', clientTextChannel);
 
-  console.log('[...] Testing getEmbedMessage');
   const embedMessage = await getEmbedMessage(guildID);
   console.log('[+] Embed message:', embedMessage);
 
   console.log('[+] FirestoreController tests completed successfully!');
 }
 
-__test_firestore_controller__();
+
+module.exports = {
+  db,
+  enqueue,
+  dequeue,
+  getQueue,
+  destroyQueue,
+  queueLen,
+  updateEmbedMessageID,
+  updateClientTextChannelID,
+  getClientTextChannel,
+  getEmbedMessage,
+  __test_guild_controller__,
+  __test_firestore_controller__,
+}
+
+// __test_guild_controller__();
+// __test_firestore_controller__();

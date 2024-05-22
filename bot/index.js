@@ -1,6 +1,6 @@
-const { client } = require('./init/client');
-const { loadCommands } = require('./init/loadCommands');
-const { loadEvents } = require('./init/loadEvents');
+const { client } = require('./helpers/Client');
+const { loadCommands } = require('./helpers/loadCommands');
+const { loadEvents } = require('./helpers/loadEvents');
 
 loadCommands(client);
 loadEvents(client);

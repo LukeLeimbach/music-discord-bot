@@ -1,6 +1,6 @@
-const { youtubeApiKey } = require('../youtubeConfig.json');
+const { youtubeApiKey } = require('../../youtubeConfig.json');
 const { YTSearcher, YTSearch } = require('ytsearcher');
-const { Song } = require('./Song.js');
+const { Song } = require('../Song.js');
 
 
 /**
@@ -40,6 +40,7 @@ class YoutubeHandler {
     // Handle query string
     else if (typeof resultsOrQuery === 'string' || resultsOrQuery instanceof String) {
       const searchResults = await this.search(resultsOrQuery);
+      if (searchResults === null) return null;
       return new Song(searchResults.first);
     }
     // Handle invalid argument
@@ -50,9 +51,13 @@ class YoutubeHandler {
   }
 }
 
-module.exports = YoutubeHandler;
+const youtubeHandler = new YoutubeHandler();
+
+module.exports = { youtubeHandler };
 
 
+
+// ---------------------------- TESTING ----------------------------
 
 /**
  * A test function to demonstrate the usage of YoutubeHandler methods.
@@ -77,4 +82,4 @@ async function __test__() {
     : console.log('[-] Tests failed for test Query "test"');
 }
 
-__test__();
+// __test__();

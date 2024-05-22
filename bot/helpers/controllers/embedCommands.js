@@ -1,6 +1,15 @@
 const { EmbedBuilder } = require('discord.js');
 const { FirestoreController } = require('./FirestoreController.js');
+const { client } = require('../client.js')
 
+
+  // TODO: Update text channel
+    // If in firebase, use firebase text channel
+    // else, prompt user to set text channel with command
+  // TODO: Clear channel
+  // TODO: Send default embed
+  // TODO: Add action row
+  // TODO: Update ready status
 
 /**
  * Clears the text channel for a given text channel.

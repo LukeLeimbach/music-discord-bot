@@ -1,5 +1,4 @@
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const { FirestoreController } = require('./FirestoreController.js');
 
 
 class EmbedController {
@@ -7,12 +6,13 @@ class EmbedController {
    * Represents an EmbedController object.
    * 
    * @constructor
-   * @param {string} guildID - The ID of the guild.
+   * @param {PlayerController} playerController - The supervising PlayerController instance.
    * @param {FirestoreController} FirestoreController - The FirestoreController instance.
    */
-  constructor(guildID, FirestoreController) {
+  constructor(playerController, FirestoreController) {
     this.FirestoreController = FirestoreController;
-    this.guildID = guildID;
+    this.playerController = playerController;
+    this.guildID = playerController.guildID;
     this.textChannel = null;
     this.banner = new AttachmentBuilder(__dirname + '../../img/banner.png');
     this.logopng = new AttachmentBuilder(__dirname + '../../img/logo.png');
@@ -20,6 +20,8 @@ class EmbedController {
     this.embedMessage = null;
     this.actionRow = null;
     this.embed = null;
+
+    this._initialize();
   }
 
   _initialize() {
@@ -44,29 +46,17 @@ class EmbedController {
   }
 
   async _clearTextChannel() {
-    const didGetTextChannel = await this.FirestoreController.getClientTextChannel();
-    if (!didGetTextChannel) {
+    const textChannel = await this.FirestoreController.getClientTextChannel();
+    if (!textChannel) {
       console.log('[-] Error in _clearTextChannel, Failed to get text channel');
       // TODO: Handle this error
       return false;
     }
   }
+
+  async __test__() {
+    console.log('[+] NO TESTS IN EMBED CONTROLLER');
+  }
 }
 
 module.exports = { EmbedController };
-
-
-
-
-// ----------------------- TESTING ------------------------------
-
-function __test__() {
-  const embedController = new EmbedController();
-  embedController._initialize();
-  console.log(embedController.embed);
-  embedController.embed !== null
-    ? console.log('[+] EmbedController successfully created embed')
-    : console.log('[-] EmbedController failed to created embed');
-}
-
-__test__();
