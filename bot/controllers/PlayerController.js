@@ -32,13 +32,4 @@ class PlayerController {
 }
 
 
-async function __test__() {
-  const playerController = new PlayerController('261601676941721602');
-  await playerController.__test__();
-}
-
-__test__().then(() => {
-  console.log('[+] PlayerController test completed successfully');
-}).catch(error => {
-  console.error('[-] Error in PlayerController test:', error);
-});
+module.exports = { PlayerController };

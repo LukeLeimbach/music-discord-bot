@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { FirestoreController } = require('./FirestoreController.js');
-const { client } = require('../client.js')
+const { client } = require('../helpers/client.js')
 
 
   // TODO: Update text channel

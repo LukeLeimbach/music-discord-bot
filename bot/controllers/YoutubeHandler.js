@@ -1,6 +1,6 @@
-const { youtubeApiKey } = require('../../youtubeConfig.json');
+const { youtubeApiKey } = require('../youtubeConfig.json');
 const { YTSearcher, YTSearch } = require('ytsearcher');
-const { Song } = require('../Song.js');
+const { Song } = require('../helpers/Song.js');
 
 
 /**

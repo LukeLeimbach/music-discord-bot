@@ -1,10 +1,10 @@
 const { initializeApp, cert } = require('firebase-admin/app');
-const { getFirestore, DocumentReference, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
+const { getFirestore, DocumentReference } = require('firebase-admin/firestore');
 const { Message, TextChannel } = require('discord.js');
 const path = require('path');
 
 // Read the firebaseConfig.json file
-const serviceAccount = require(path.resolve(__dirname, '../../firebaseConfig.json'));
+const serviceAccount = require(path.resolve(__dirname, '../firebaseConfig.json'));
 
 // Initialize Firebase app
 initializeApp({
