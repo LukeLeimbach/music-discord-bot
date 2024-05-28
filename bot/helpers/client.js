@@ -1,5 +1,6 @@
-const { Client, GatewayIntentBits, IntentsBitField, Message, Channel, BaseInteraction } = require('discord.js');
-const { token } = require('../discordConfig.json');
+const { Client, GatewayIntentBits, IntentsBitField, Message, Channel, BaseInteraction, Collection } = require('discord.js');
+const { addGuildToFirestore, isGuildInFirestore } = require('../controllers/firestoreCommands');
+
 
 const client = new Client({ 
   intents: [
@@ -11,7 +12,7 @@ const client = new Client({
   ]
 });
 
-client.login(token);
+client.commands = new Collection();
 
 const CLIENT_ID = client.id;
 
@@ -64,9 +65,97 @@ function isClient(object) {
 }
 
 
+/**
+ * Retrieves the default text channel for a given guild.
+ * 
+ * @param {string} guildID - The ID of the guild.
+ * @returns {Promise<Discord.TextChannel|null>} A promise that resolves to the default text channel, or null if the guild is not found.
+ */
+async function getDefaultTextChannel(guildID) {
+  const guild = await client.guilds.fetch(guildID);
+  if (!guild) {
+    console.log('[-] Error in getDefaultTextChannel, Failed to fetch guild:', guildID);
+    return null;
+  }
+
+  return guild.channels.cache.find(channel => channel.type === 'text');
+}
+
+
+/**
+ * Prompts the user to set the text channel for the bot to use.
+ * 
+ * @param {string} guildID - The ID of the guild.
+ * @returns {Promise<void>} A promise that resolves when the prompt is completed.
+ */
+async function promptUserForTextChannel(guildID) {
+  const guild = client.guilds.cache.get(guildID);
+  if (!guild) {
+    console.log('[-] Error in promptUserForTextChannel, Failed to get guild');
+    return;
+  }
+
+  let defaultTextChannel = null;
+  try {
+    defaultTextChannel = await getDefaultTextChannel(guildID);
+    if (!defaultTextChannel) {
+      console.log('[-] Error in promptUserForTextChannel, Failed to get default text channel (returned false)');
+      return;
+    }
+
+  } catch (error) {
+    console.log('[-] Error in promptUserForTextChannel, Failed to get default text channel:', error);
+    return;
+  }
+
+  await defaultTextChannel.send('Please set the text channel for the bot to use by typing `!setchannel` in the desired channel.');
+}
+
+
+/**
+ * Caches guilds by checking if they are already stored in Firestore.
+ * If a guild is not cached, it is added to Firestore.
+ * 
+ * @returns {Promise<boolean>} A promise that resolves to true if all guilds are cached successfully, false otherwise
+ */
+async function cacheGuilds() {
+  try {
+    const guilds = await client.guilds.fetch();
+    guilds.forEach(async guild => {
+      const isGuildCached = await isGuildInFirestore(guild.id);
+      if (!isGuildCached) {
+        const didCacheGuilds = await addGuildToFirestore(guild.id);
+        if (!didCacheGuilds) {
+          console.log('[-] Error in cacheGuilds, Failed to cache guild (returned false):', guild.id);
+          return false;
+        }
+        await promptUserForTextChannel(guild.id);
+      }
+    });
+    return true;
+  } catch (error) {
+    console.log('[-] Error in cacheGuilds, Failed to cache guilds:', error);
+    return false
+  }
+}
+
+
+async function __client_test__() {
+  console.log('[+] Client tests...');
+  await cacheGuilds()
+    ? console.log('[+] Successfully cached guilds')
+    : console.log('[-] Failed to cache guilds');
+
+  await promptUserForTextChannel('261601676941721602');
+}
+
 module.exports = {
   client,
   getMessageFromID,
   getChannelFromID,
-  isClient
+  isClient,
+  getDefaultTextChannel,
+  CLIENT_ID,
+  cacheGuilds,
+  __client_test__,
 };

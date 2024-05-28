@@ -281,7 +281,12 @@ async function updateEmbedMessageID(guildID, message) {
   }
 
   try {
-    await guildDocRef.update({ embedMessage: message });
+    const docSnapshot = await guildDocRef.get();
+    if (docSnapshot.exists) {
+      await guildDocRef.update({ embedMessage: message });
+    } else {
+      await guildDocRef.set({ embedMessage: message });
+    }
     return true;
   } catch (error) {
     console.error('[-] Error in updateEmbedMessageID, Unable to update embed message:', error);
@@ -330,7 +335,7 @@ async function getClientTextChannel(guildID) {
   try {
     const guildSnapshot = await guildDocRef.get();
     const guildData = guildSnapshot.data();
-    return guildData.clientTextChannel;
+    if (!guildData.clientTextChannel) return guildData.clientTextChannel;
   } catch (error) {
     console.error('[-] Error in getClientTextChannel, Unable to get client text channel:', error);
     return null;
@@ -358,6 +363,54 @@ async function getEmbedMessage(guildID) {
   } catch (error) {
     console.error('[-] Error in getEmbedMessage, Unable to get embed message:', error);
     return null;
+  }
+}
+
+
+// ------------------- CLIENT FUNCTIONS ------------------- //
+
+/**
+ * Checks if a guild exists in Firestore.
+ * 
+ * @param {string} guildID - The ID of the guild to check.
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating whether the guild exists in Firestore.
+ */
+async function isGuildInFirestore(guildID) {
+  const guildDocRef = _getGuildDocRef(guildID);
+  if (!guildDocRef) {
+    console.error('[-] Error in isGuildInFirestore, Invalid guildDocRef:', guildDocRef);
+    return false;
+  }
+
+  try {
+    const guildSnapshot = await guildDocRef.get();
+    return guildSnapshot.exists;
+  } catch (error) {
+    console.error('[-] Error in isGuildInFirestore, Unable to check if guild exists:', error);
+    return false;
+  }
+}
+
+
+/**
+ * Adds a guild to Firestore.
+ * 
+ * @param {string} guildID - The ID of the guild to add.
+ * @returns {Promise<boolean>} A promise that resolves to true if the guild was added successfully, false otherwise.
+ */
+async function addGuildToFirestore(guildID) {
+  const guildDocRef = _getGuildDocRef(guildID);
+  if (!guildDocRef) {
+    console.error('[-] Error in addGuildToFirestore, Invalid guildDocRef:', guildDocRef);
+    return false;
+  }
+
+  try {
+    await guildDocRef.set({});
+    return true;
+  } catch (error) {
+    console.error('[-] Error in addGuildToFirestore, Unable to add guild to Firestore:', error);
+    return false;
   }
 }
 
@@ -416,7 +469,7 @@ async function __test_guild_controller__() {
 }
 
 async function __test_firestore_controller__() {
-  const guildID = '261601676941721602'; // Wall Moment Guild ID
+  const guildID = 'TESTING_GUILD'; // Wall Moment Guild ID
   const messageID = '123456789012345678';
   const textChannelID = '123456789012345678';
 
@@ -453,6 +506,8 @@ module.exports = {
   getEmbedMessage,
   __test_guild_controller__,
   __test_firestore_controller__,
+  isGuildInFirestore,
+  addGuildToFirestore
 }
 
 // __test_guild_controller__();

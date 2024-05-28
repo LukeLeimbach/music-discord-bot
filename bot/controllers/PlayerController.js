@@ -21,7 +21,18 @@ class PlayerController {
      * 2. Create embed 
      * 
      */
+
+    let clientTextChannel = null;
+    try {
+      clientTextChannel = await this.FirestoreController.getClientTextChannel();
+    } catch (error) {
+      clientTextChannel = await this.promptUserForTextChannel();
+    }
     console.log('[+] Initializing PlayerController...');
+  }
+
+  async promptUserForTextChannel() {
+    return this.EmbedController.promptUserForTextChannel();
   }
 
   async __test__() {

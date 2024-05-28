@@ -1,5 +1,5 @@
 const { REST, Routes } = require('discord.js');
-const { clientId, token, devGuildId } = require('./config.json');
+const { clientId, token, devGuildId } = require('./discordConfig.json');
 const fs = require('node:fs');
 const path = require('node:path');
 
