@@ -34,6 +34,7 @@ src/settings.js
 
 
 bot/node_modules
+bot/config.json
 bot/firebaseConfig.json
 bot/discordConfig.json
 bot/youtubeConfig.json
