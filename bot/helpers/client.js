@@ -78,7 +78,16 @@ async function getDefaultTextChannel(guildID) {
     return null;
   }
 
-  return guild.channels.cache.find(channel => channel.type === 'text');
+  // Get System channel ID (if exists)
+  if (guild.systemChannelId) return guild.channels.cache.get(guild.systemChannelId);
+
+  // Get the first text channel if no system channel exists
+  for (let key in guild.channels.cache) {
+    let c = channels[key];
+    if (c[1].type === 'text') return guild.channels.cache.get(c[0]);
+  }
+
+  return null;
 }
 
 
@@ -91,24 +100,25 @@ async function getDefaultTextChannel(guildID) {
 async function promptUserForTextChannel(guildID) {
   const guild = client.guilds.cache.get(guildID);
   if (!guild) {
-    console.log('[-] Error in promptUserForTextChannel, Failed to get guild');
+    console.error('[-] Error in promptUserForTextChannel, Failed to get guild');
     return;
   }
 
-  let defaultTextChannel = null;
+  // Get the default text channel. Handle errors.
+  let _defaultTextChannel = null;
   try {
-    defaultTextChannel = await getDefaultTextChannel(guildID);
-    if (!defaultTextChannel) {
-      console.log('[-] Error in promptUserForTextChannel, Failed to get default text channel (returned false)');
+    _defaultTextChannel = await getDefaultTextChannel(guildID);
+    if (!_defaultTextChannel) {
+      console.error('[-] Error in promptUserForTextChannel, Failed to get default text channel (returned null)');
       return;
     }
-
+    
   } catch (error) {
-    console.log('[-] Error in promptUserForTextChannel, Failed to get default text channel:', error);
+    console.error('[-] Error in promptUserForTextChannel, Failed to get default text channel:', error);
     return;
   }
 
-  await defaultTextChannel.send('Please set the text channel for the bot to use by typing `!setchannel` in the desired channel.');
+  await _defaultTextChannel.send('Please set the text channel for the bot to use by typing `/setchannel` in the desired channel.');
 }
 
 
@@ -146,8 +156,9 @@ async function __client_test__() {
     ? console.log('[+] Successfully cached guilds')
     : console.log('[-] Failed to cache guilds');
 
-  await promptUserForTextChannel('261601676941721602');
+  // await promptUserForTextChannel('261601676941721602');  // Test prompt functionality
 }
+
 
 module.exports = {
   client,
@@ -157,5 +168,6 @@ module.exports = {
   getDefaultTextChannel,
   CLIENT_ID,
   cacheGuilds,
+  promptUserForTextChannel,
   __client_test__,
 };

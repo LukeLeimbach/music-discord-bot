@@ -10,7 +10,7 @@ module.exports = {
     try {
       console.log(interaction.guild.id, interaction.channel.id);
       await updateClientTextChannelID(interaction.guild.id, interaction.channel.id);
-      await interaction.reply('Text channel has been updated.');
+      await interaction.reply({content: '✅ Text channel has been updated.', ephemeral: true});
     } catch (error) {
       // FIXME: Prompt user again or retry
       console.log('[-] Error in setchannel, Failed to update text channel:', error);

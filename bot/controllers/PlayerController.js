@@ -5,10 +5,10 @@ const { FirestoreController } = require('./FirestoreController.js');
 
 class PlayerController {
   constructor(guildID) {
-    this.guildID = toString(guildID);
+    this.guildID = guildID.toString();
     this.FirestoreController = new FirestoreController(this);
     this.QueueController = new QueueController(this);
-    this.EmbedController = new EmbedController(this, FirestoreController);
+    this.EmbedController = new EmbedController(this, this.FirestoreController);
     this.player; // TODO: Implement player
     this.textChannel = null;
     this.embedMessage = null; // TODO: Handle embed being deleted

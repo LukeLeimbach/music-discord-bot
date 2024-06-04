@@ -1,5 +1,6 @@
-const { AttachmentBuilder } = require('discord.js');
-const { defaultEmbed, __test__ } = require('./embedCommands');
+const { AttachmentBuilder, EmbedBuilder } = require('discord.js');
+const { getDefaultTextChannel } = require('../helpers/client.js');
+const { __test__ } = require('./embedCommands');
 
 
 class EmbedController {
@@ -7,15 +8,15 @@ class EmbedController {
    * Represents an EmbedController object.
    * 
    * @constructor
-   * @param {PlayerController} playerController - The supervising PlayerController instance.
+   * @param {PlayerController} PlayerController - The supervising PlayerController instance.
    * @param {FirestoreController} FirestoreController - The FirestoreController instance.
    */
-  constructor(playerController, FirestoreController) {
+  constructor(PlayerController, FirestoreController) {
     this.FirestoreController = FirestoreController;
-    this.playerController = playerController;
-    this.guildID = playerController.guildID;
+    this.PlayerController = PlayerController;
+    this.guildID = PlayerController.guildID;
     this.textChannel = null;
-    this.banner = new AttachmentBuilder(__dirname + '../../img/banner.png');
+    this.banner = new AttachmentBuilder(__dirname + '../../img/banner.jpg');
     this.logopng = new AttachmentBuilder(__dirname + '../../img/logo.png');
     this.isReady = false;
     this.embedMessage = null;
@@ -34,21 +35,29 @@ class EmbedController {
     // TODO: Add action row
     // TODO: Update ready status
 
-    this.embed = defaultEmbed;
+    this.embed = new EmbedBuilder()
+      .setColor(0x0099FF)
+      .setTitle('Wall Music')
+      .setURL('https://wall-music-discord-bot.firebaseapp.com')
+      .setDescription('Type a song into the channel to get started!')
+      .setThumbnail('attachment://logo.png')
+      .setImage('attachment://banner.jpg')
+      .setTimestamp()
+      .setFooter({ text: 'COMMANDS', iconURL: 'attachment://logo.png' });
+
+    console.log('[+] Successfully Initialized EmbedController');
   }
 
-  async _clearTextChannel() {
-    const textChannel = await this.FirestoreController.getClientTextChannel();
-    if (!textChannel) {
-      console.log('[-] Error in _clearTextChannel, Failed to get text channel');
-      // TODO: Handle this error
-      return false;
+  async sendEmbed() {
+    const tc = await getDefaultTextChannel(this.guildID);
+    console.log('[+] Sending embed...');
+    try {
+      await tc.send({ embeds: [this.embed], files: [this.banner, this.logopng] });
+    } catch (error) {
+      console.error('[-] Error in sendEmbed, Failed to send embed:', error);
     }
   }
 
-  async promptUserForTextChannel() {
-    
-  }
 
   async __test__() {
     await __test__();

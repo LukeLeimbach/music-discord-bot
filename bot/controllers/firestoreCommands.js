@@ -469,7 +469,7 @@ async function __test_guild_controller__() {
 }
 
 async function __test_firestore_controller__() {
-  const guildID = 'TESTING_GUILD'; // Wall Moment Guild ID
+  const guildID = '261601676941721602'; // Wall Moment Guild ID
   const messageID = '123456789012345678';
   const textChannelID = '123456789012345678';
 
