@@ -14,11 +14,11 @@ const {
 class QueueController {
   /**
    * Constructs a new QueueController instance.
-   * @param {PlayerController} playerController - The supervising PlayerController instance.
+   * @param {GuildController} GuildController - The supervising GuildController instance.
    */
-  constructor(playerController) {
-    this.playerController = playerController;
-    this.guildID = playerController.guildID;
+  constructor(GuildController) {
+    this.GuildController = GuildController;
+    this.guildID = GuildController.guildID;
     this.isLoop = false; //TODO: Implement loop feature
   }
 

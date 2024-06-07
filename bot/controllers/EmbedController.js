@@ -8,13 +8,13 @@ class EmbedController {
    * Represents an EmbedController object.
    * 
    * @constructor
-   * @param {PlayerController} PlayerController - The supervising PlayerController instance.
+   * @param {GuildController} GuildController - The supervising GuildController instance.
    * @param {FirestoreController} FirestoreController - The FirestoreController instance.
    */
-  constructor(PlayerController, FirestoreController) {
+  constructor(GuildController, FirestoreController) {
     this.FirestoreController = FirestoreController;
-    this.PlayerController = PlayerController;
-    this.guildID = PlayerController.guildID;
+    this.GuildController = GuildController;
+    this.guildID = GuildController.guildID;
     this.textChannel = null;
     this.banner = new AttachmentBuilder(__dirname + '../../img/banner.jpg');
     this.logopng = new AttachmentBuilder(__dirname + '../../img/logo.png');

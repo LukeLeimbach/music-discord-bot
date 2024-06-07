@@ -13,11 +13,11 @@ class FirestoreController {
   /**
    * Creates a new instance of FirestoreController.
    * 
-   * @param {PlayerController} playerController - The supervising PlayerController instance.
+   * @param {GuildController} GuildController - The supervising GuildController instance.
    */
-  constructor(playerController) {
-    this.playerController = playerController;
-    this.guildID = playerController.guildID;
+  constructor(GuildController) {
+    this.GuildController = GuildController;
+    this.guildID = GuildController.guildID;
   }
 
   /**
