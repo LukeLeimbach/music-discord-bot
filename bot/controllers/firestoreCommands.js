@@ -17,6 +17,23 @@ const db = getFirestore();
 
 // ------------------- GUILD CONTROLLER FUNCTIONS ------------------- //
 
+
+/**
+ * Retrieves all guild IDs from the Firestore collection.
+ * @returns {Promise<string[]>} An array of guild IDs.
+ */
+async function getAllCachedGuildIDs() {
+  try {
+    const guildsSnapshot = await db.collection('guilds').get();
+    const guildIDs = guildsSnapshot.docs.map(doc => doc.id);
+    return guildIDs;
+  } catch (error) {
+    console.error('[-] Error in getAllGuildIDs, Unable to get all guild IDs:', error);
+    return [];
+  }
+}
+
+
 /**
  * Validates the guild ID.
  *
@@ -495,6 +512,7 @@ async function __test_firestore_controller__() {
 
 module.exports = {
   db,
+  getAllGuildIDs: getAllCachedGuildIDs,
   enqueue,
   dequeue,
   getQueue,

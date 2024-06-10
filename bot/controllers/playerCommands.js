@@ -1,25 +1,7 @@
 const { AudioPlayer, VoiceConnection, PlayerSubscription, createAudioResource, joinVoiceChannel } = require('@discordjs/voice');
 const { BaseInteraction } = require('discord.js');
 const ytdl = require('ytdl-core');
-const { QueueController } = require('./QueueController');
 const { Song } = require('../helpers/Song');
-
-
-/**
- * Creates a new audio player.
- * 
- * @param {boolean} [debug=false] - Whether to enable debug mode for the player.
- * @returns {AudioPlayer} The newly created audio player.
- */
-function createPlayer(debug=false) {
-  // Player automatically stops when there are no subscribers
-  return new AudioPlayer({
-    behaviors: {
-      noSubscriber: NoSubscriberBehavior.Stop,
-    },
-    debug: debug,
-  });
-}
 
 
 /**
@@ -94,7 +76,7 @@ async function _validateInteraction(interaction) {
 
   if (interaction.bot) {
     console.error('[-] Error in _validateInteraction, Bot cannot interact:', interaction);
-    await interaction.reply({ content: 'Something has gone horribly wrong, try again.', ephemeral: true })
+    await interaction.reply({ content: '!', ephemeral: true })
     return false;
   }
 
@@ -109,7 +91,7 @@ async function _validateInteraction(interaction) {
  * @param {BaseInteraction} interaction - The interaction object representing the user's interaction with the bot.
  * @returns {boolean} Returns true if the user is in a voice channel, false otherwise.
  */
-async function _isUserInVC(interaction) {
+async function isUserInVC(interaction) {
   // Get the guild
   // Check if the user is in a VC
   // Return true if the user is in a VC, false otherwise
@@ -155,9 +137,9 @@ function _createAudioResource(song) {
  * @param {Interaction} interaction - The interaction object.
  * @returns {Object|null} Returns { connection, subscription } if successful, null otherwise.
  */
-async function _play(queueController, audioPlayer, interaction) {
+async function play(queueController, audioPlayer, interaction) {
   // Check if user is in VC
-  if (!(await _isUserInVC(interaction))) return false;
+  if (!(await isUserInVC(interaction))) return false;
 
   // Check if queue exists
   if (queueController.queueLen == 0) {
@@ -169,8 +151,20 @@ async function _play(queueController, audioPlayer, interaction) {
   // Create con/sub
   const { connection, subscription } = await joinVC(audioPlayer, interaction);
 
+  if (!connection || !subscription) {
+    console.error('[-] Error in _play, Failed to create connection/subscription.');
+    await interaction.reply({ content: 'The bot could not connect to the voice channel. Please try again.', ephemeral: true })
+    return null;
+  }
+
   // Dequeue Song
   const song = await queueController.dequeue();
+
+  if (!song) {
+    console.error('[-] Error in _play, Failed to dequeue song.');
+    await interaction.reply({ content: 'The song failed to dequeue! Please try again.', ephemeral: true })
+    return null;
+  }
 
   // Create the audio resource
   const audioResource = _createAudioResource(song);
@@ -196,12 +190,11 @@ async function __audio_player_test__() {
 }
 
 module.exports = {
-  createPlayer,
   joinVC,
   destroyConSub,
   _validateInteraction,
-  _isUserInVC,
+  isUserInVC,
   _createAudioResource,
-  _play,
+  play,
   __audio_player_test__,
 };

@@ -1,13 +1,39 @@
+const { createAudioPlayer, NoSubscriberBehavior } = require('@discordjs/voice');
 const {
-  createPlayer,
-  
+  joinVC,
+  destroyConSub,
+  play,
+  isUserInVC,
+  _validateInteraction,
 } = require('./playerCommands');
-const { GuildController } = require('./GuildController');
 
+/**
+ * Represents a player controller for managing audio playback
+ */
 class PlayerController {
   constructor(GuildController) {
-    this.GuildController = GuildController;
-    this.AudioPlayer = new AudioPlayer();
+    this.ParentGuildController = GuildController;
+    this.AudioPlayer = createAudioPlayer({behaviors: {noSubscriber: NoSubscriberBehavior.Stop}});
+  }
+
+  async joinVC(interaction) {
+    return await joinVC(this.AudioPlayer, interaction);
+  }
+
+  destroyConSub(con, sub) {
+    return destroyConSub(con, sub);
+  }
+
+  async play(interaction, song) {
+    return await play(this.AudioPlayer, interaction, song);
+  }
+
+  async isUserInVC(interaction) {
+    return await isUserInVC(interaction);
+  }
+
+  async _validateInteraction(interaction) {
+    return await _validateInteraction(interaction);
   }
 }
 
