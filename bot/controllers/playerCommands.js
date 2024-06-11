@@ -129,7 +129,7 @@ function _createAudioResource(song) {
 
 
 /**
- * INTERACTION BASED: Plays the next song in the queue.
+ * INTERACTION BASED: Joins the vc and plays the next song in the queue.
  * TODO: Handle interaction in interactionCreate.js based on return value.
  * 
  * @param {QueueController} queueController - The queue controller object.
@@ -142,7 +142,7 @@ async function play(queueController, audioPlayer, interaction) {
   if (!(await isUserInVC(interaction))) return false;
 
   // Check if queue exists
-  if (queueController.queueLen == 0) {
+  if (queueController.queueLen() == 0) {
     console.warn('[!] Warning in _play, Queue is empty. Cannot play. Interaction handled.');
     await interaction.reply({ content: 'The queue is empty bozo. Queue something up by typing the name of the song in the text channel.', ephemeral: true });
     return null;

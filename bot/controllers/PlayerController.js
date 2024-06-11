@@ -11,8 +11,13 @@ const {
  * Represents a player controller for managing audio playback
  */
 class PlayerController {
+  /**
+   * Represents a PlayerController.
+   * @constructor
+   * @param {GuildController} GuildController - The parent GuildController.
+   */
   constructor(GuildController) {
-    this.ParentGuildController = GuildController;
+    this.parentGuildController = GuildController;
     this.AudioPlayer = createAudioPlayer({behaviors: {noSubscriber: NoSubscriberBehavior.Stop}});
   }
 
@@ -24,8 +29,14 @@ class PlayerController {
     return destroyConSub(con, sub);
   }
 
-  async play(interaction, song) {
-    return await play(this.AudioPlayer, interaction, song);
+  /**
+   * INTERACTION BASED: Joins the vc and plays the next song in the queue.
+   * 
+   * @param {Interaction} interaction - The interaction object.
+   * @returns {Object|null} Object { connection, subscription } if successful, null otherwise.
+   */
+  async play(interaction) {
+    return await play(this.parentGuildController.QueueController, this.AudioPlayer, interaction);
   }
 
   async isUserInVC(interaction) {

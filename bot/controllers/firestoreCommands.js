@@ -512,7 +512,7 @@ async function __test_firestore_controller__() {
 
 module.exports = {
   db,
-  getAllGuildIDs: getAllCachedGuildIDs,
+  getAllCachedGuildIDs,
   enqueue,
   dequeue,
   getQueue,
