@@ -1,6 +1,5 @@
 const { collection, query, onSnapshot } = require("firebase/firestore");
 const { db } = require('./firestoreController.js');
-const { updateEmbed } = require('./updateEmbed.js');
 
 
 /**
@@ -35,5 +34,5 @@ function listenToQueueChanges(client) {
 };
 
 module.exports = {
-  listenToQueueChanges: listenToQueueChanges,
+  listenToQueueChanges,
 }

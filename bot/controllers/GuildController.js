@@ -10,11 +10,8 @@ class GuildController {
     this.guildID = guildID.toString();
     this.FirestoreController = new FirestoreController(this);
     this.QueueController = new QueueController(this);
-    this.EmbedController = new EmbedController(this, this.FirestoreController);
+    this.EmbedController = new EmbedController(this);
     this.PlayerController = new PlayerController(this, this.QueueController);
-    this.player;
-    this.textChannel = null;
-    this.embedMessage = null;
   }
 
 

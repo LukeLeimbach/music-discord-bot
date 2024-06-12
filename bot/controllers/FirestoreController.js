@@ -43,7 +43,7 @@ class FirestoreController {
   /**
    * Gets the client text channel for a specific guild.
    * 
-   * @returns {Promise<TextChannel|null>} The ID of the client text channel, or null if not found or encountered an error.
+   * @returns {Promise<string|null>} The ID of the client text channel, or null if not found or encountered an error.
    */
   async getClientTextChannel() {
     return await getClientTextChannel(this.guildID);

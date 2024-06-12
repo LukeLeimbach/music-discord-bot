@@ -1,5 +1,5 @@
-const { Client, GatewayIntentBits, IntentsBitField, Message, Channel, BaseInteraction, Collection } = require('discord.js');
-const { addGuildToFirestore, isGuildInFirestore } = require('../controllers/firestoreCommands');
+const { Client, GatewayIntentBits, IntentsBitField, Message, Channel, BaseInteraction, Collection, ChannelType } = require('discord.js');
+const { addGuildToFirestore, isGuildInFirestore, updateClientTextChannelID } = require('../controllers/firestoreCommands');
 
 
 const client = new Client({ 
@@ -69,7 +69,7 @@ function isClient(object) {
  * Retrieves the default text channel for a given guild.
  * 
  * @param {string} guildID - The ID of the guild.
- * @returns {Promise<Discord.TextChannel|null>} A promise that resolves to the default text channel, or null if the guild is not found.
+ * @returns {Promise<TextChannel|null>} A promise that resolves to the default text channel, or null if the guild is not found.
  */
 async function getDefaultTextChannel(guildID) {
   const guild = await client.guilds.fetch(guildID);
@@ -105,20 +105,17 @@ async function promptUserForTextChannel(guildID) {
   }
 
   // Get the default text channel. Handle errors.
-  let _defaultTextChannel = null;
   try {
-    _defaultTextChannel = await getDefaultTextChannel(guildID);
+    const _defaultTextChannel = await getDefaultTextChannel(guildID);
     if (!_defaultTextChannel) {
       console.error('[-] Error in promptUserForTextChannel, Failed to get default text channel (returned null)');
       return;
     }
-    
+    await _defaultTextChannel.send('Please set the text channel for the bot to use by typing `/setchannel` in the desired channel.');
   } catch (error) {
     console.error('[-] Error in promptUserForTextChannel, Failed to get default text channel:', error);
     return;
   }
-
-  await _defaultTextChannel.send('Please set the text channel for the bot to use by typing `/setchannel` in the desired channel.');
 }
 
 
@@ -150,6 +147,51 @@ async function cacheGuilds() {
 }
 
 
+/**
+ * Creates the Wall Music text channel in the specified guild. Updates the default text channel in Firestore if successfull.
+ * 
+ * @param {string} guildID - The ID of the guild where the text channel should be created.
+ * @returns {Promise<TextChannel|null>} A promise that resolves to the created text channel, or null if an error occurred.
+ */
+async function createTextChannel(guildID) {
+  const guild = client.guilds.cache.get(guildID);
+  if (!guild) {
+    console.error('[-] Error in createTextChannel, Failed to get guild');
+    return null;
+  }
+
+  try {
+    const textChannel = await guild.channels.create({
+      name: 'wall-music-channel',
+      type: ChannelType.GuildText,
+      position: 0,
+      permissionOverwrites: [
+        {
+          id: guild.roles.everyone,
+          allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+        }
+      ],
+    });
+
+    const didUpdateClientTextChannelID = await updateClientTextChannelID(guildID, textChannel.id);
+    if (!didUpdateClientTextChannelID) {
+      console.error('[-] Error in createTextChannel, Failed to update client text channel ID');
+      return null;
+    }
+    return textChannel;
+  } catch (error) {
+    console.error('[-] Error in createTextChannel, Failed to create text channel. Prompting user to set text channel manually:', error);
+    try {
+      await promptUserForTextChannel(guildID);
+      return null;
+    } catch (error) {
+      console.error('[-] Error in createTextChannel, Failed to prompt user for text channel:', error);
+      return null;
+    }
+  }
+}
+
+
 async function __client_test__() {
   console.log('[+] Client tests...');
   await cacheGuilds()
@@ -169,5 +211,6 @@ module.exports = {
   CLIENT_ID,
   cacheGuilds,
   promptUserForTextChannel,
+  createTextChannel,
   __client_test__,
 };

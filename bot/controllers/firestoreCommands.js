@@ -340,7 +340,7 @@ async function updateClientTextChannelID(guildID, textChannel) {
  * Retrieves the client text channel for a given guild.
  * 
  * @param {string} guildID - The ID of the guild.
- * @returns {Promise<TextChannel|null>} The ID of the client text channel, or null if not found or encountered an error.
+ * @returns {Promise<string|null>} The ID of the client text channel, or null if not found or encountered an error.
  */
 async function getClientTextChannel(guildID) {
   const guildDocRef = _getGuildDocRef(guildID);
