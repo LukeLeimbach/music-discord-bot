@@ -352,7 +352,8 @@ async function getClientTextChannel(guildID) {
   try {
     const guildSnapshot = await guildDocRef.get();
     const guildData = guildSnapshot.data();
-    if (!guildData.clientTextChannel) return guildData.clientTextChannel;
+    if (guildData.clientTextChannel) return guildData.clientTextChannel;
+    else return null;
   } catch (error) {
     console.error('[-] Error in getClientTextChannel, Unable to get client text channel:', error);
     return null;
@@ -488,7 +489,7 @@ async function __test_guild_controller__() {
 async function __test_firestore_controller__() {
   const guildID = '261601676941721602'; // Wall Moment Guild ID
   const messageID = '123456789012345678';
-  const textChannelID = '123456789012345678';
+  const textChannelID = '0000';
 
   const didUpdateEmbedMessage = await updateEmbedMessageID(guildID, messageID);
   didUpdateEmbedMessage
@@ -501,7 +502,10 @@ async function __test_firestore_controller__() {
     : console.error('[-] Client text channel did not update successfully');
 
   const clientTextChannel = await getClientTextChannel(guildID);
-  console.log('[+] Client text channel:', clientTextChannel);
+  clientTextChannel == textChannelID
+    ? console.log('[+] Client text channel retrieved successfully')
+    : console.log('[-] Client text channel retrieval failed');
+
 
   const embedMessage = await getEmbedMessage(guildID);
   console.log('[+] Embed message:', embedMessage);
