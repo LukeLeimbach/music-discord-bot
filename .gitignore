@@ -32,5 +32,9 @@ ios/
 
 src/settings.js
 
-bot/config.json
-bot/node_modules
+
+# node_modules
+src/config.json
+src/firebaseConfig.json
+src/discordConfig.json
+src/youtubeConfig.json
