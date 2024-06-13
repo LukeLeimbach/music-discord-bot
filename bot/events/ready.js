@@ -9,7 +9,7 @@ module.exports = {
   once: true,
   async execute(client) {
     // await __test__(); // Run tests before client is ready
-    // await cacheGuilds(); // FIXME: Cache guilds before client is ready
+    await cacheGuilds();
     console.log('[+] Client Ready');
 
     // Initialize GuildManager

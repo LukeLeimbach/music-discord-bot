@@ -1,3 +1,5 @@
+const { InteractionCollector } = require("discord.js");
+
 /**
  * Represents the InteractionHandler class.
  */
@@ -36,11 +38,16 @@ class InteractionHandler {
         guildController.PlayerController.connection = subscription.connection;
         break;
       case 'stop':
+        if (!guildController.PlayerController.connection) {
+          interaction.reply({ content: 'No connection to stop.', ephemeral: true });
+          return;
+        };  // No connection to stop
+        await guildController.PlayerController.AudioPlayer.stop();
         await guildController.PlayerController.destroyConSub();
         await guildController.QueueController.destroyQueue();
         break;
       case 'skip':
-        console.log('[!] Loop button pressed. No Functionality yet.');
+        console.log('[!] Skip button pressed. No Functionality yet.');
         break;
       case 'loop':
         console.log('[!] Loop button pressed. No Functionality yet.');

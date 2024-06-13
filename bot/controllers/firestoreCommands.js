@@ -1,7 +1,9 @@
+const path = require('path');
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore, DocumentReference } = require('firebase-admin/firestore');
 const { Message, TextChannel } = require('discord.js');
-const path = require('path');
+const EventEmitter = require('node:events');
+const{ youtubeHandler } = require('./YoutubeHandler.js');
 
 // Read the firebaseConfig.json file
 const serviceAccount = require(path.resolve(__dirname, '../firebaseConfig.json'));
@@ -14,8 +16,11 @@ initializeApp({
 // Get Firestore instance
 const db = getFirestore();
 
+// Query Change Event Emitter
+const queryChangeEmitter = new EventEmitter();
 
-// ------------------- GUILD CONTROLLER FUNCTIONS ------------------- //
+
+// ------------------- NON-SPECIFIC CONTROLLER FUNCTIONS ------------------- //
 
 
 /**
@@ -32,6 +37,19 @@ async function getAllCachedGuildIDs() {
     return [];
   }
 }
+
+
+async function queueChangeListener() {
+  const guildIDs = await getAllCachedGuildIDs();
+  const queueDocRefs = guildIDs.map(guildID => _getQueueDocRef(guildID));
+  queueDocRefs.map(docRef => docRef.onSnapshot(async (snapshot) => {
+    const queue = snapshot.docs.map(doc => doc.data());
+    queryChangeEmitter.emit('queueChange', queue);
+  }));
+}
+
+
+// ------------------- GUILD CONTROLLER FUNCTIONS ------------------- //
 
 
 /**
@@ -516,7 +534,9 @@ async function __test_firestore_controller__() {
 
 module.exports = {
   db,
+  queryChangeEmitter,
   getAllCachedGuildIDs,
+  queueChangeListener,
   enqueue,
   dequeue,
   getQueue,
@@ -529,7 +549,7 @@ module.exports = {
   __test_guild_controller__,
   __test_firestore_controller__,
   isGuildInFirestore,
-  addGuildToFirestore
+  addGuildToFirestore,
 }
 
 // __test_guild_controller__();

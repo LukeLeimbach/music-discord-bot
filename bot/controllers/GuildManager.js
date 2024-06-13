@@ -1,5 +1,5 @@
 const { GuildController } = require('./GuildController');
-const { getAllCachedGuildIDs } = require('./firestoreCommands');
+const { getAllCachedGuildIDs, queueChangeListener } = require('./firestoreCommands');
 const { InteractionHandler } = require('./InteractionHandler');
 const { client } = require('../helpers/client');
 
@@ -17,7 +17,6 @@ class GuildManager {
     this.interactionHandler = null;
   }
 
-
   /**
    * Initializes the GuildManager by fetching guilds from Firestore and creating a GuildController for each guild.
    * Also initializes the interaction handler.
@@ -26,12 +25,13 @@ class GuildManager {
    */
   async _initialize() {
     // Get all guilds from firestore and create a GuildController for each
-    await this._crossValidateClientGuildsWithFirestore();
+    await this._initializeGuildControllers();
 
     // Initialize the interaction handler
     this.interactionHandler = new InteractionHandler(this);
 
     console.log('---Guilds in GuildMap:', Array.from(this.guildMap.keys()));
+    queueChangeListener();
   }
 
   /**
@@ -44,7 +44,6 @@ class GuildManager {
     this.guildMap.set(guildID, new GuildController(guildID));
   }
 
-
   /**
    * Removes a guild from the guild manager.
    * 
@@ -56,20 +55,20 @@ class GuildManager {
     this.guildMap.delete(guildID);
   }
 
-
   /**
    * Cross-validates the client's guilds with the guilds stored in Firestore.
    * Adds the guilds that exist in both the client and Firestore to the GuildManager.
    * 
    * @returns {Promise<void>} A promise that resolves once the cross-validation is complete.
    */
-  async _crossValidateClientGuildsWithFirestore() {
+  async _initializeGuildControllers() {
     const firestoreGuildIDs = await getAllCachedGuildIDs();
+    console.log('firestoreGuildIDS:', firestoreGuildIDs);
     const clientGuildIDs = client.guilds.cache.map(guild => guild.id); 
-    const guildsInBoth = clientGuildIDs.filter(id => firestoreGuildIDs.includes(id));
+    const guildsInBoth = firestoreGuildIDs.filter(id => clientGuildIDs.includes(id));
 
     for (const guildID of guildsInBoth) {
-      this.addGuild(guildID)
+      this.addGuild(guildID);
       this.guildMap.get(guildID)._initialize();
     };
   }

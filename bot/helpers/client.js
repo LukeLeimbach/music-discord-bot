@@ -146,7 +146,6 @@ async function cacheGuilds() {
           console.log('[-] Error in cacheGuilds, Failed to cache guild (returned false):', guild.id);
           return false;
         }
-        await createTextChannel(guild.id);
       }
     });
     return true;

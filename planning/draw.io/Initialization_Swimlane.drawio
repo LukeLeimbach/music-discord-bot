@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="jdxhVcqK-yEDoykmqJeY" name="Page-1">
-        <mxGraphModel dx="767" dy="416" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="931" dy="506" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -16,10 +16,10 @@
                 <mxCell id="30" value="Run Tests" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="10" vertex="1">
                     <mxGeometry x="40" y="160" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="Interaction Handler" style="swimlane;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
+                <mxCell id="12" value="Interaction Handler" style="swimlane;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="1" vertex="1">
                     <mxGeometry x="240" y="40" width="200" height="1000" as="geometry"/>
                 </mxCell>
-                <mxCell id="38" value="Begin to direct interactions through the Guild Manager" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="12" vertex="1">
+                <mxCell id="38" value="Begin to direct interactions through the Guild Manager" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="12" vertex="1">
                     <mxGeometry x="40" y="240" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="13" value="Guild Manager" style="swimlane;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="1" vertex="1">
@@ -42,7 +42,7 @@
                 <mxCell id="98" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="15" source="78" target="97" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="78" value="Initialize Sub Controllers:&lt;br&gt;- Embed&lt;br&gt;- Queue&lt;br&gt;- Firestore&lt;br&gt;- Player" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="15" vertex="1">
+                <mxCell id="78" value="Initialize Sub Controllers:&lt;br&gt;- Embed&lt;br&gt;- Queue&lt;br&gt;- Firestore&lt;br&gt;- Player" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="15" vertex="1">
                     <mxGeometry x="40" y="220" width="120" height="100" as="geometry"/>
                 </mxCell>
                 <mxCell id="97" value="Create Event Emitter for Queue Changes" style="rounded=1;whiteSpace=wrap;html=1;" parent="15" vertex="1">
@@ -57,7 +57,7 @@
                 <mxCell id="46" value="Create Empty Embed" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="17" vertex="1">
                     <mxGeometry x="40" y="560" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="101" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="17" source="59" target="100">
+                <mxCell id="101" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="17" source="59" target="100" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="59" value="Create Action Row" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="17" vertex="1">
@@ -84,10 +84,10 @@
                 <mxCell id="99" value="Begin Listening to Queue Changes" style="rounded=1;whiteSpace=wrap;html=1;" parent="17" vertex="1">
                     <mxGeometry x="40" y="800" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="102" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="17" source="100" target="99">
+                <mxCell id="102" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="17" source="100" target="99" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="100" value="Send default embed to textChannel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" vertex="1" parent="17">
+                <mxCell id="100" value="Send default embed to textChannel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="17" vertex="1">
                     <mxGeometry x="40" y="720" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="18" value="Queue Controller" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">

@@ -97,12 +97,12 @@ async function isUserInVC(interaction) {
   // Return true if the user is in a VC, false otherwise
 
   if (!_validateInteraction(interaction)) {
-    console.error('[-] Error in _isUserInVC, Invalid interaction:', interaction);
+    console.error('[-] Error in _isUserInVC, Invalid interaction');
     return false;
   }
 
   if (!interaction.member.voice.channel) {
-    console.error('[-] Error in _validateInteraction, User not in VC:', interaction);
+    console.warn('[!] Warn in _validateInteraction, User not in VC');
     await interaction.reply({ content: 'Join a voice channel bozo.', ephemeral: true })
     return false;
   }
