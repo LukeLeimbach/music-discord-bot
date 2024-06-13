@@ -16,6 +16,9 @@ Server administrators know the mess that results when users use music bot comman
 
 ## Commandless Discord Music Streaming App
 
+![Demo Image](./img/temp_demo_image.png)
+*The above demo image is an in-progress build and does not represent the final user interface.*
+
 Avoid the user experience nightmare and use an application that is simple, robust, and open-source.
 
 Advanced customization options, enhanced queue controll, permissions, and better song searching will be available in the Web App (WIP) by logging in with your Discord Account.
