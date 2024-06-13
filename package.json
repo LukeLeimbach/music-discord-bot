@@ -1,5 +1,5 @@
 {
-  "main": "./bot/index.js",
+  "main": "./src/index.js",
   "name": "react-app",
   "version": "0.1.0",
   "private": true,

@@ -33,8 +33,8 @@ ios/
 src/settings.js
 
 
-bot/node_modules
-bot/config.json
-bot/firebaseConfig.json
-bot/discordConfig.json
-bot/youtubeConfig.json
+# node_modules
+src/config.json
+src/firebaseConfig.json
+src/discordConfig.json
+src/youtubeConfig.json
