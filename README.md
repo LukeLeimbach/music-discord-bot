@@ -87,6 +87,8 @@ node .
 **KEY**: Green is completely implemented and automated, orange is non-priority, and black is TODO.
 ![Init](./planning/draw.io/Initialization_Swimlane.drawio.png)
 
+### Class Diagram
+
 ![Class Diagram](./planning/draw.io/Class_Diagram.drawio.png)
 
 ## About the Developer
