@@ -80,6 +80,16 @@ node .
 
 **NOTE**: If you followed these instructions and cannot start the bot, please create an issue.
 
+## Planning
+
+### Initialization Process
+
+**KEY**: Green is completely implemented and automated, orange is non-priority, and black is TODO.
+![Init](./planning/draw.io/Initialization_Swimlane.drawio.png)
+
+![Class Diagram](./planning/draw.io/Class_Diagram.drawio.png)
+
 ## About the Developer
+
 
 What's up, my name's Luke. I just graduated with a bachelor's in computer scinece from The University of Montana and need something to over-engineer while searching for a job. I have always loved building Disord bots, but I've never had the foresite to plan a production level project until now. Check out the [planning](./planning) folder to see my process.
