@@ -1,6 +1,6 @@
 # Wall Music Discord Application
 
-<img src='./img/wm_github_banner.png' alt='Banner'>
+![Banner](./img/wm_github_banner.png)
 
 ## Install Easily for Free
 
@@ -24,14 +24,15 @@ Advanced customization options, enhanced queue controll, permissions, and better
 
 If you'd like to clone this repo and host Wall Music yourself, follow these steps:
 
-**1. Have node.js installed**
-**2. Install dependencies**
+### 1. Have node.js installed
+
+### 2. Install dependencies
 
 ``` console
 npm i
 ```
 
-**3. Create your config files in './src'**
+### 3. Create your config files in './src'
 
 - discordConfig.json
   - Get your bot token in the [Discord Developer Portal](https://discord.com/developers/applications/)
@@ -72,7 +73,7 @@ npm i
 }
 ```
 
-**4. Start the bot!**
+### 4. Start the bot
 
 ``` console
 node .
@@ -92,6 +93,5 @@ node .
 ![Class Diagram](./planning/draw.io/Class_Diagram.drawio.png)
 
 ## About the Developer
-
 
 What's up, my name's Luke. I just graduated with a bachelor's in computer scinece from The University of Montana and need something to over-engineer while searching for a job. I have always loved building Disord bots, but I've never had the foresite to plan a production level project until now. Check out the [planning](./planning) folder to see my process.
