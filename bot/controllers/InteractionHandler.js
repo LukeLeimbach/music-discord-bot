@@ -13,6 +13,7 @@ class InteractionHandler {
 
 
   async handleButtonInteraction(interaction) {
+    console.log('[+] Handling button interaction.')
     if (!interaction.isButton()) {
       console.error(`[-] Error in handleInteraction. Interaction is not a button.`);
       await interaction.reply({ content: 'Something has gone horrible wrong...', ephemeral: true });
@@ -29,16 +30,17 @@ class InteractionHandler {
 
     const buttonCustomId = interaction.customId;
     switch (buttonCustomId) {
-      case 'play':
-        guildController.PlayerController.play(interaction);
-        await interaction.reply({ content: 'Playing...', ephemeral: true });
+      case 'togglePlay':
+        const subscription = guildController.PlayerController.play(interaction);
+        guildController.PlayerController.subscription = subscription;
+        guildController.PlayerController.connection = subscription.connection;
         break;
       case 'stop':
         await guildController.PlayerController.destroyConSub();
         await guildController.QueueController.destroyQueue();
         break;
       case 'skip':
-        await guildController.PlayerController.destroyConSub();
+        console.log('[!] Loop button pressed. No Functionality yet.');
         break;
       case 'loop':
         console.log('[!] Loop button pressed. No Functionality yet.');

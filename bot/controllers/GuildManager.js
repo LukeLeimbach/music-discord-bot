@@ -31,7 +31,7 @@ class GuildManager {
     // Initialize the interaction handler
     this.interactionHandler = new InteractionHandler(this);
 
-    console.log('Guilds in GuildMap:', Array.from(this.guildMap.keys()));
+    console.log('---Guilds in GuildMap:', Array.from(this.guildMap.keys()));
   }
 
   /**
@@ -40,7 +40,7 @@ class GuildManager {
    * @param {string} guildID - The ID of the guild to be removed.
    */
   addGuild(guildID) {
-    console.log('addGuild:', guildID)
+    console.log('---addGuild:', guildID)
     this.guildMap.set(guildID, new GuildController(guildID));
   }
 
@@ -68,7 +68,10 @@ class GuildManager {
     const clientGuildIDs = client.guilds.cache.map(guild => guild.id); 
     const guildsInBoth = clientGuildIDs.filter(id => firestoreGuildIDs.includes(id));
 
-    for (const guildID of guildsInBoth) this.addGuild(guildID);
+    for (const guildID of guildsInBoth) {
+      this.addGuild(guildID)
+      this.guildMap.get(guildID)._initialize();
+    };
   }
 }
 

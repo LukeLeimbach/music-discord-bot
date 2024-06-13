@@ -10,7 +10,7 @@ const { Song } = require('../helpers/Song');
  * 
  * @param {BaseInteraction} interaction - The interaction object.
  * @param {AudioPlayer} audioPlayer - The audio player object.
- * @returns {Object} An object containing { VoiceConnection, PlayerSubscription } if successful, null otherwise.
+ * @returns {PlayerSubscription} Returns a player subscription if successful, null otherwise.
  */
 async function joinVC(audioPlayer, interaction) {
   // Validate interaction, handle interaction if failed
@@ -30,7 +30,7 @@ async function joinVC(audioPlayer, interaction) {
   try {
     const con = joinVoiceChannel(joinConfig);
     const sub = con.subscribe(audioPlayer);
-    return { con, sub };
+    return sub;
   } catch (error) {
     console.error('[-] Error in createConSub, Failed to create connection/subscription:', error);
     await interaction.reply({ content: 'Something has gone horribly wrong, try again.', ephemeral: true })
@@ -42,11 +42,11 @@ async function joinVC(audioPlayer, interaction) {
 /**
  * Destroys the connection and subscription.
  *
- * @param {VoiceConnection} con - The connection object.
  * @param {PlayerSubscription} sub - The subscription object.
  */
-function destroyConSub(con, sub) {
+function destroyConSub(sub) {
   try {
+    const con = sub.connection;
     sub.unsubscribe();
     con.destroy();
   } catch (error) {
@@ -68,7 +68,7 @@ async function _validateInteraction(interaction) {
     return false;
   }
 
-  if (interaction.type != 2) {
+  if (interaction.type != 3) {
     console.error('[-] Error in _validateInteraction, Invalid interaction type:', interaction.type);
     await interaction.reply({ content: 'Something has gone horribly wrong, try again.', ephemeral: true })
     return false;
@@ -149,16 +149,26 @@ async function play(queueController, audioPlayer, interaction) {
   }
   
   // Create con/sub
-  const { connection, subscription } = await joinVC(audioPlayer, interaction);
+  const subscription = await joinVC(audioPlayer, interaction);
 
-  if (!connection || !subscription) {
+  if (!subscription) {
     console.error('[-] Error in _play, Failed to create connection/subscription.');
     await interaction.reply({ content: 'The bot could not connect to the voice channel. Please try again.', ephemeral: true })
     return null;
   }
 
   // Dequeue Song
+  if (await queueController.queueLen() == 0) {
+    console.warn('[!] Warning in _play, Queue is empty. Cannot play. Interaction handled.');
+    await interaction.reply({ content: 'The queue is empty bozo. Queue something up by typing the name of the song in the text channel.', ephemeral: true });
+    return null;
+  }
   const song = await queueController.dequeue();
+  if (!song) {
+    console.error('[-] Error in _play, Failed to dequeue song.');
+    await interaction.reply({ content: 'There is (supposed to be) nothing in the queue.', ephemeral: true })
+    return null;
+  }
 
   if (!song) {
     console.error('[-] Error in _play, Failed to dequeue song.');
@@ -179,7 +189,7 @@ async function play(queueController, audioPlayer, interaction) {
   }
 
   // Interaction will be handled by the caller
-  return { connection, subscription };
+  return subscription;
 }
 
 

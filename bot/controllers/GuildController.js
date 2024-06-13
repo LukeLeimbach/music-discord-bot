@@ -6,17 +6,18 @@ const { PlayerController } = require('./PlayerController.js');
 
 class GuildController {
   constructor(guildID) {
-    console.log('CREATED NEW GUILD CONTROLLER')
     this.guildID = guildID.toString();
     this.FirestoreController = new FirestoreController(this);
     this.QueueController = new QueueController(this);
+    this.PlayerController = new PlayerController(this);
     this.EmbedController = new EmbedController(this);
-    this.PlayerController = new PlayerController(this, this.QueueController);
   }
 
 
   async _initialize() {
-    return;
+    console.log('[+] Initializing GuildController for guild:', this.guildID);
+    await this.EmbedController._initialize();
+    await this.QueueController._initialize();
   }
 
 

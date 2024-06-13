@@ -176,7 +176,7 @@ async function enqueue(guildID, song) {
  * 
  * @param {string} guildID - The ID of the guild.
  * @param {boolean} [peek=false] - If true, only peeks at the first song without removing it.
- * @returns {Object|boolean} The dequeued song object if successful, or true if the queue is empty, or false if there was an error.
+ * @returns {Song|null} The dequeued song object if successful, null otherwise.
  */
 async function dequeue(guildID, peek=false) {
   const queue = await getQueue(guildID);
@@ -184,7 +184,7 @@ async function dequeue(guildID, peek=false) {
 
   if (queue.length === 0) {
     console.warn('[!] Queue is empty');
-    return true;
+    return null;
   }
 
   const firstSong = queue[0];
@@ -196,7 +196,7 @@ async function dequeue(guildID, peek=false) {
       await _validateQueue(guildID);
     } catch (error) {
       console.error('[-] Error in dequeue, Unable to delete song:', error);
-      return false;
+      return null;
     }
   }
 
@@ -487,9 +487,9 @@ async function __test_guild_controller__() {
 }
 
 async function __test_firestore_controller__() {
-  const guildID = '261601676941721602'; // Wall Moment Guild ID
-  const messageID = '123456789012345678';
-  const textChannelID = '0000';
+  const guildID = '1250558428984905759'; // FNKBOX
+  const messageID = 'NONE ATM';
+  const textChannelID = 'NONE ATM';
 
   const didUpdateEmbedMessage = await updateEmbedMessageID(guildID, messageID);
   didUpdateEmbedMessage

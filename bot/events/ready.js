@@ -8,12 +8,12 @@ module.exports = {
   name: Events.ClientReady,
   once: true,
   async execute(client) {
-    await __test__(); // Run tests before client is ready
-    await cacheGuilds(); // Cache guilds before client is ready
+    // await __test__(); // Run tests before client is ready
+    // await cacheGuilds(); // FIXME: Cache guilds before client is ready
     console.log('[+] Client Ready');
 
     // Initialize GuildManager
-    client.guildManager = new GuildManager(client);
+    client.guildManager = new GuildManager();
     try {
       await client.guildManager._initialize();
       client.guildManager.interactionHandler

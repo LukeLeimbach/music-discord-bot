@@ -1,4 +1,14 @@
-const { Client, GatewayIntentBits, IntentsBitField, Message, Channel, BaseInteraction, Collection, ChannelType } = require('discord.js');
+const {
+  Client,
+  GatewayIntentBits,
+  IntentsBitField,
+  PermissionsBitField,
+  Message,
+  Channel,
+  BaseInteraction,
+  Collection,
+  ChannelType
+} = require('discord.js');
 const { addGuildToFirestore, isGuildInFirestore, updateClientTextChannelID } = require('../controllers/firestoreCommands');
 
 
@@ -8,7 +18,7 @@ const client = new Client({
     GatewayIntentBits.GuildMessages, 
     GatewayIntentBits.MessageContent, 
     GatewayIntentBits.GuildIntegrations, 
-    IntentsBitField.Flags.GuildVoiceStates
+    IntentsBitField.Flags.GuildVoiceStates,
   ]
 });
 
@@ -136,7 +146,7 @@ async function cacheGuilds() {
           console.log('[-] Error in cacheGuilds, Failed to cache guild (returned false):', guild.id);
           return false;
         }
-        await promptUserForTextChannel(guild.id);
+        await createTextChannel(guild.id);
       }
     });
     return true;
@@ -153,6 +163,7 @@ async function cacheGuilds() {
  * @param {string} guildID - The ID of the guild where the text channel should be created.
  * @returns {Promise<TextChannel|null>} A promise that resolves to the created text channel, or null if an error occurred.
  */
+// Function to create a text channel
 async function createTextChannel(guildID) {
   const guild = client.guilds.cache.get(guildID);
   if (!guild) {
@@ -161,14 +172,20 @@ async function createTextChannel(guildID) {
   }
 
   try {
+    const permissions = [
+      PermissionsBitField.Flags.ManageChannels,
+      PermissionsBitField.Flags.ViewChannel,
+      PermissionsBitField.Flags.SendMessages,
+    ];
+
     const textChannel = await guild.channels.create({
       name: 'wall-music-channel',
       type: ChannelType.GuildText,
       position: 0,
       permissionOverwrites: [
         {
-          id: guild.roles.everyone,
-          allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+          id: guild.roles.everyone.id, // Ensure to use the .id property
+          allow: permissions,
         }
       ],
     });

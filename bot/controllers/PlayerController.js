@@ -1,4 +1,4 @@
-const { createAudioPlayer, NoSubscriberBehavior } = require('@discordjs/voice');
+const { createAudioPlayer, NoSubscriberBehavior, PlayerSubscription } = require('@discordjs/voice');
 const {
   joinVC,
   destroyConSub,
@@ -19,24 +19,30 @@ class PlayerController {
   constructor(GuildController) {
     this.parentGuildController = GuildController;
     this.AudioPlayer = createAudioPlayer({behaviors: {noSubscriber: NoSubscriberBehavior.Stop}});
+    this.connection = null;
+    this.subscription = null;
   }
 
   async joinVC(interaction) {
     return await joinVC(this.AudioPlayer, interaction);
   }
 
-  destroyConSub(con, sub) {
-    return destroyConSub(con, sub);
+  destroyConSub() {
+    destroyConSub(this.subscription);
+    this.subscription = null;
+    this.connection = null;
   }
 
   /**
    * INTERACTION BASED: Joins the vc and plays the next song in the queue.
    * 
    * @param {Interaction} interaction - The interaction object.
-   * @returns {Object|null} Object { connection, subscription } if successful, null otherwise.
+   * @returns {PlayerSubscription|null} Object subscription if successful, null otherwise.
    */
   async play(interaction) {
-    return await play(this.parentGuildController.QueueController, this.AudioPlayer, interaction);
+    this.subscription = await play(this.parentGuildController.QueueController, this.AudioPlayer, interaction);
+    if (!this.subscription) return null;
+    this.connection = this.subscription.connection;
   }
 
   async isUserInVC(interaction) {

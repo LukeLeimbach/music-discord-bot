@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="jdxhVcqK-yEDoykmqJeY" name="Page-1">
-        <mxGraphModel dx="652" dy="354" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="767" dy="416" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -57,7 +57,7 @@
                 <mxCell id="46" value="Create Empty Embed" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="17" vertex="1">
                     <mxGeometry x="40" y="560" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="100" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="17" source="59" target="99" edge="1">
+                <mxCell id="101" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="17" source="59" target="100">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="59" value="Create Action Row" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="17" vertex="1">
@@ -82,6 +82,12 @@
                     <mxGeometry x="40" y="480" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="99" value="Begin Listening to Queue Changes" style="rounded=1;whiteSpace=wrap;html=1;" parent="17" vertex="1">
+                    <mxGeometry x="40" y="800" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="102" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="17" source="100" target="99">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="100" value="Send default embed to textChannel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" vertex="1" parent="17">
                     <mxGeometry x="40" y="720" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="18" value="Queue Controller" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -90,16 +96,16 @@
                 <mxCell id="95" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="18" source="48" target="94" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="48" value="Destroy Queues" style="rounded=1;whiteSpace=wrap;html=1;" parent="18" vertex="1">
+                <mxCell id="48" value="Destroy Queues" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="18" vertex="1">
                     <mxGeometry x="40" y="290" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="94" value="Begin Listening to Queue Changes" style="rounded=1;whiteSpace=wrap;html=1;" parent="18" vertex="1">
                     <mxGeometry x="40" y="480" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="19" value="Firestore Controller" style="swimlane;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
+                <mxCell id="19" value="Firestore Controller" style="swimlane;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="1" vertex="1">
                     <mxGeometry x="1260" y="40" width="200" height="1000" as="geometry"/>
                 </mxCell>
-                <mxCell id="87" value="Update Cached Text Channel" style="rounded=1;whiteSpace=wrap;html=1;" parent="19" vertex="1">
+                <mxCell id="87" value="Update Cached Text Channel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="19" vertex="1">
                     <mxGeometry x="40" y="400" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="32" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="30" target="22" edge="1">
@@ -113,10 +119,10 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="45" value="Player Controller" style="swimlane;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
+                <mxCell id="45" value="Player Controller" style="swimlane;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="1" vertex="1">
                     <mxGeometry x="1460" y="40" width="200" height="1000" as="geometry"/>
                 </mxCell>
-                <mxCell id="49" value="Create AudioPlayer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="45" vertex="1">
+                <mxCell id="49" value="Create AudioPlayer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="45" vertex="1">
                     <mxGeometry x="40" y="290" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="79" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="33" target="78" edge="1">

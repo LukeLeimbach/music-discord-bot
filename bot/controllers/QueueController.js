@@ -22,6 +22,10 @@ class QueueController {
     this.isLoop = false; //TODO: Implement loop feature
   }
 
+  async _initialize() {
+    await this.destroyQueue();
+  }
+
   /**
    * Enqueues a song to the guild's queue.
    * 

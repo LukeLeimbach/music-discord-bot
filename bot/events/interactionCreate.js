@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { guildManagerInstance } = require('../controllers/GuildManager');
+const { client } = require('../helpers/client');
 
 
 module.exports = {
@@ -37,7 +37,7 @@ module.exports = {
 
     // Button handler
     else if (interaction.isButton()) {
-      await guildManagerInstance.interactionHandler.handleButtonInteraction(interaction);
+      await client.guildManager.interactionHandler.handleButtonInteraction(interaction);
     }
 
     else {
