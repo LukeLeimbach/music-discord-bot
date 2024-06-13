@@ -27,7 +27,9 @@ If you'd like to clone this repo and host Wall Music yourself, follow these step
 **1. Have node.js installed**
 **2. Install dependencies**
 
-> npm i
+``` console
+npm i
+```
 
 **3. Create your config files in './src'**
 
@@ -44,7 +46,7 @@ If you'd like to clone this repo and host Wall Music yourself, follow these step
   "token": "YOUR_BOT_TOKEN",
   "clientId": "WALL_MUSICS_ID",
   "devGuildId": "DEVELOPMENT_GUILD_ID",
-  "devTestChannelId": "DEVELOPMENT_CHANNEL_ID" < Depricated
+  "devTestChannelId": "DEVELOPMENT_CHANNEL_ID"
 }
 ```
 
@@ -72,7 +74,9 @@ If you'd like to clone this repo and host Wall Music yourself, follow these step
 
 **4. Start the bot!**
 
-> node .
+``` console
+node .
+```
 
 **NOTE**: If you followed these instructions and cannot start the bot, please create an issue.
 
