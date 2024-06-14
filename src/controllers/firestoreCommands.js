@@ -2,8 +2,7 @@ const path = require('path');
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore, DocumentReference } = require('firebase-admin/firestore');
 const { Message, TextChannel } = require('discord.js');
-const EventEmitter = require('node:events');
-const{ youtubeHandler } = require('./YoutubeHandler.js');
+const { defaultTextChannelChangeEmitter, queueChangeEmitter } = require('../helpers/eventEmitters');
 
 // Read the firebaseConfig.json file
 const serviceAccount = require(path.resolve(__dirname, '../firebaseConfig.json'));
@@ -16,11 +15,24 @@ initializeApp({
 // Get Firestore instance
 const db = getFirestore();
 
-// Query Change Event Emitter
-const queryChangeEmitter = new EventEmitter();
-
 
 // ------------------- NON-SPECIFIC CONTROLLER FUNCTIONS ------------------- //
+
+
+/**
+ * Listens for changes in the queue documents and emits a 'queueChange' event.
+ * 
+ * @returns {Promise<void>} A promise that resolves when the listener is set up.
+ */
+async function queueChangeListener(client) {
+  const guilds = client.guilds.cache;
+  const queueDocRefs = guilds.map(guild => getQueueDocRef(guild.id));
+  queueDocRefs.map(docRef => docRef.onSnapshot(async (snapshot) => {
+    const queue = snapshot.docs.map(doc => doc.data());
+    queueChangeEmitter.emit('queueChange', queue, docRef.parent.id);
+    console.log('[+] Queue Change Event Emitted. Queue: ', queue, '| GuildID:', docRef.parent.id);
+  }));
+}
 
 
 /**
@@ -36,16 +48,6 @@ async function getAllCachedGuildIDs() {
     console.error('[-] Error in getAllGuildIDs, Unable to get all guild IDs:', error);
     return [];
   }
-}
-
-
-async function queueChangeListener() {
-  const guildIDs = await getAllCachedGuildIDs();
-  const queueDocRefs = guildIDs.map(guildID => _getQueueDocRef(guildID));
-  queueDocRefs.map(docRef => docRef.onSnapshot(async (snapshot) => {
-    const queue = snapshot.docs.map(doc => doc.data());
-    queryChangeEmitter.emit('queueChange', queue);
-  }));
 }
 
 
@@ -70,7 +72,7 @@ function _validateGuildID(guildID) {
  * @param {string} guildID - The ID of the guild.
  * @returns {DocumentReference} The document reference for the guild.
  */
-function _getQueueDocRef(guildID) {
+function getQueueDocRef(guildID) {
   if (!_validateGuildID(guildID)) {
     console.error('[-] Error in _getQueueDocRef, Invalid guildID:', guildID);
     return null;
@@ -94,7 +96,7 @@ function _getQueueDocRef(guildID) {
  */
 async function _getQueueSnapshot(guildID) {
   try {
-    const queueDocRef = _getQueueDocRef(guildID);
+    const queueDocRef = getQueueDocRef(guildID);
     if (!queueDocRef) return null;
 
     const queueSnapshot = await queueDocRef.get();
@@ -137,12 +139,12 @@ async function _validateQueue(guildID) {
     queue.sort((a, b) => a.order - b.order);
 
     // Create a batch update
-    const batch = _getQueueDocRef(guildID).firestore.batch();
+    const batch = getQueueDocRef(guildID).firestore.batch();
 
     // Update the queue collection based on the sorted queue
     for (let i = 0; i < queue.length; i++) {
       const docID = queue[i].firebaseID;
-      const docRef = _getQueueDocRef(guildID).doc(docID);
+      const docRef = getQueueDocRef(guildID).doc(docID);
       batch.update(docRef, { order: i });
     }
 
@@ -170,7 +172,7 @@ async function enqueue(guildID, song) {
   }
 
   const queueSnapshot = await _getQueueSnapshot(guildID);
-  const queueDocRef = _getQueueDocRef(guildID);
+  const queueDocRef = getQueueDocRef(guildID);
   if (!queueSnapshot) {
     console.error('[-] Error in enqueue, Invalid queueDocRef:', queueSnapshot);
     return false;
@@ -209,7 +211,7 @@ async function dequeue(guildID, peek=false) {
   if (!peek) {
     try {
       const docID = `${firstSong.song}_${firstSong.artist}`.replace(/\s/g, '_');
-      const docRef = _getQueueDocRef(guildID).doc(docID);
+      const docRef = getQueueDocRef(guildID).doc(docID);
       await docRef.delete();
       await _validateQueue(guildID);
     } catch (error) {
@@ -253,7 +255,7 @@ async function getQueue(guildID) {
  * @returns {Promise<boolean>} A promise that resolves to true if the queue is successfully destroyed, false otherwise.
  */
 async function destroyQueue(guildID) {
-  const queueDocRef = _getQueueDocRef(guildID);
+  const queueDocRef = getQueueDocRef(guildID);
   if (!queueDocRef) {
     console.error('[-] Error in destroyQueue, Invalid queueDocRef:', queueDocRef);
     return false;
@@ -331,7 +333,7 @@ async function updateEmbedMessageID(guildID, message) {
 
 
 /**
- * Updates the embed message for a specific guild.
+ * Updates the embed message for a specific guild. Emmits a 'defaultTextChannelChange' event to defaultTextChannelChangeEmitter.
  * 
  * @param {string} guildID - The ID of the guild.
  * @param {TextChannel} textChannel - Updated text channel object.
@@ -346,6 +348,7 @@ async function updateClientTextChannelID(guildID, textChannel) {
 
   try {
     await guildDocRef.update({ clientTextChannel: textChannel });
+    defaultTextChannelChangeEmitter.emmit('defaultTextChannelChange', guildID, textChannel);
     return true;
   } catch (error) {
     console.error('[-] Error in updateClientTextChannelID, Unable to update client text channel:', error);
@@ -473,7 +476,7 @@ async function __test_guild_controller__() {
   const testSong = await youtubeHandler.getTopVideoInfo('test')
 
   const targetGuildID = '261601676941721602';
-  const queueDocRef = _getQueueDocRef(targetGuildID);
+  const queueDocRef = getQueueDocRef(targetGuildID);
   console.log('[+] Queue Doc Ref created successfully');
 
   const queueSnapshot = await _getQueueSnapshot(targetGuildID);
@@ -533,10 +536,9 @@ async function __test_firestore_controller__() {
 
 
 module.exports = {
-  db,
-  queryChangeEmitter,
-  getAllCachedGuildIDs,
   queueChangeListener,
+  db,
+  getAllCachedGuildIDs,
   enqueue,
   dequeue,
   getQueue,

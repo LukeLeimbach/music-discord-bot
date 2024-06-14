@@ -1,5 +1,3 @@
-const { InteractionCollector } = require("discord.js");
-
 /**
  * Represents the InteractionHandler class.
  */

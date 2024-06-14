@@ -1,6 +1,7 @@
 const { GuildController } = require('./GuildController');
 const { getAllCachedGuildIDs, queueChangeListener } = require('./firestoreCommands');
 const { InteractionHandler } = require('./InteractionHandler');
+const { clientInitiatedEmitter, defaultTextChannelChangeEmitter } = require('../helpers/eventEmitters');
 const { client } = require('../helpers/client');
 
 
@@ -14,6 +15,7 @@ class GuildManager {
    */
   constructor() {
     this.guildMap = new Map();
+    this.guildDefaultTextChannelIDMap = new Map();
     this.interactionHandler = null;
   }
 
@@ -30,8 +32,16 @@ class GuildManager {
     // Initialize the interaction handler
     this.interactionHandler = new InteractionHandler(this);
 
-    console.log('---Guilds in GuildMap:', Array.from(this.guildMap.keys()));
-    queueChangeListener();
+    // console.log('---Guilds in GuildMap:', Array.from(this.guildMap.keys()));
+    clientInitiatedEmitter.on('clientInitiated', () => {
+      console.log('[+] Client intialized event recieved. Listening for queue changes.')
+      queueChangeListener(client);
+    });
+
+    // Cache default text channels from firestore
+    defaultTextChannelChangeEmitter.on('defaultTextChannelChange', (guildID, textChannelID) => {
+      this.guildDefaultTextChannelIDMap.set(guildID, textChannelID);
+    });
   }
 
   /**
@@ -62,14 +72,18 @@ class GuildManager {
    * @returns {Promise<void>} A promise that resolves once the cross-validation is complete.
    */
   async _initializeGuildControllers() {
+    // Cross validate guilds in firestore and client
     const firestoreGuildIDs = await getAllCachedGuildIDs();
-    console.log('firestoreGuildIDS:', firestoreGuildIDs);
     const clientGuildIDs = client.guilds.cache.map(guild => guild.id); 
     const guildsInBoth = firestoreGuildIDs.filter(id => clientGuildIDs.includes(id));
 
     for (const guildID of guildsInBoth) {
       this.addGuild(guildID);
-      this.guildMap.get(guildID)._initialize();
+      await this.guildMap.get(guildID)._initialize();
+
+      // Once guild controller is initialized, set the default text channel in the map
+      const defaultTextChannelID = await this.guildMap.get(guildID).FirestoreController.getClientTextChannel();
+      this.guildDefaultTextChannelIDMap.set(guildID, defaultTextChannelID);
     };
   }
 }

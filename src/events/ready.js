@@ -2,6 +2,7 @@ const { Events } = require('discord.js');
 const { __test__ } = require('../helpers/__test__');
 const { cacheGuilds } = require('../helpers/client');
 const { GuildManager } = require('../controllers/GuildManager');
+const { clientInitiatedEmitter } = require('../helpers/eventEmitters');
 
 
 module.exports = {
@@ -18,7 +19,9 @@ module.exports = {
       await client.guildManager._initialize();
       client.guildManager.interactionHandler
         ? console.log('[+] GuildManager initialized')
-        : console.log('[-] GuildManager failed to initialize'); 
+        : console.log('[-] GuildManager failed to initialize');
+      clientInitiatedEmitter.emit('clientInitiated');
+      
     } catch (error) {
       console.error('[-] Error initializing GuildManager:', error);
     }
