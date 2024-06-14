@@ -1,15 +1,6 @@
 const { AttachmentBuilder, EmbedBuilder, ActionRowBuilder } = require('discord.js');
-const { AudioPlayerStatus } = require('@discordjs/voice');
 const { createTextChannel, client, getChannelFromID } = require('../helpers/client');
-const { __test__ } = require('./embedCommands');
-const {
-  togglePlayBtn,
-  skipBtn,
-  backBtn,
-  stopBtn,
-  shuffleBtn,
-  loopBtn,
-} = require('../components/button');
+const { __test__, updateActionRow, updateEmbed, sendEmbed } = require('./embedCommands');
 
 
 class EmbedController {
@@ -44,36 +35,23 @@ class EmbedController {
     console.log('[+] Successfully Initialized EmbedController');
   }
 
-
-  updateActionRow(toDefault=true) {
-    const isPlaying = this.GuildController.PlayerController.AudioPlayer.state.status === AudioPlayerStatus.Playing;
-    if (toDefault) {
-      this.actionRow
-        .addComponents(
-          isPlaying ? togglePlayBtn.setLabel('▶️') : togglePlayBtn.setLabel('⏸'),
-          skipBtn,
-          stopBtn,
-          shuffleBtn,
-          loopBtn
-        );
-    }
+  /**
+   * Updates the given actionRow object.
+   * 
+   * @returns {void}
+   */
+  updateActionRow() {
+    return updateActionRow(this)
   }
 
-
-  updateEmbed(toDefault=true) {
-    if (toDefault) {
-      this.embed
-        .setColor(0x0099FF)
-        .setTitle('Wall Music')
-        .setURL('https://wall-music-discord-bot.firebaseapp.com')
-        .setDescription('Type a song into the channel to get started!')
-        .setThumbnail('attachment://logo.png')
-        .setImage('attachment://logo.png')
-        .setTimestamp()
-        .setFooter({ text: 'COMMANDS', iconURL: 'attachment://logo.png' });
-    }
+  /**
+   * Updates the given embed object with the specified properties.
+   * 
+   * @returns {void}
+   */
+  updateEmbed() {
+    return updateEmbed(this);
   }
-
 
   /**
    * Sends the embed to the EmbedController's text channel. If the text channel is not set, a new one is created.
@@ -81,22 +59,7 @@ class EmbedController {
    * @returns {Promise<boolean>} A promise that resolves to true if the embed was successfully sent, false otherwise.
    */
   async sendEmbed() {
-    if (!this.textChannel) {
-      console.warn('[!] Warn in sendEmbed, Failed to get text channel. Creating a new one...');
-      this.textChannel = await createTextChannel();
-    }
-
-    try {
-      this.embedMessage = await this.textChannel.send({
-        embeds: [this.embed],
-        components: [this.actionRow],
-        files: [this.logo], // "this.banner," FIXME: Add this back in when banner is uploaded
-      });
-      return true;
-    } catch (error) {
-      console.error('[-] Error in sendEmbed, Failed to send embed:', error);
-      return false;
-    }
+    return await sendEmbed(this)
   }
 
 

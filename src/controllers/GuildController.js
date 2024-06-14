@@ -14,6 +14,11 @@ class GuildController {
   }
 
 
+  /**
+   * Initializes the GuildController by initializing the QueueController and EmbedController.
+   * 
+   * @returns {Promise<void>} A Promise that resolves when the initialization is complete.
+   */
   async _initialize() {
     console.log('[+] Initializing GuildController for guild:', this.guildID);
     await this.EmbedController._initialize();

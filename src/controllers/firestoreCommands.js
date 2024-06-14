@@ -30,7 +30,7 @@ async function queueChangeListener(client) {
   queueDocRefs.map(docRef => docRef.onSnapshot(async (snapshot) => {
     const queue = snapshot.docs.map(doc => doc.data());
     queueChangeEmitter.emit('queueChange', queue, docRef.parent.id);
-    console.log('[+] Queue Change Event Emitted. Queue: ', queue, '| GuildID:', docRef.parent.id);
+    console.log('[+] Queue Change Event Emitted.') // Queue: ', queue, '| GuildID:', docRef.parent.id);
   }));
 }
 

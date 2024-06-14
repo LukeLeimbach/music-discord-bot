@@ -1,5 +1,5 @@
 const { AudioPlayer, PlayerSubscription, createAudioResource, joinVoiceChannel } = require('@discordjs/voice');
-const { BaseInteraction } = require('discord.js');
+const { ButtonInteraction } = require('discord.js');
 const ytdl = require('ytdl-core');
 const { Song } = require('../helpers/Song');
 
@@ -8,9 +8,8 @@ const { Song } = require('../helpers/Song');
  * INTERACTION BASED: Connects to the .
  * Handles interaction upon failure.
  * 
- * @param {BaseInteraction} interaction - The interaction object.
+ * @param {ButtonInteraction} interaction - The interaction object.
  * @param {AudioPlayer} audioPlayer - The audio player object.
- * @returns {PlayerSubscription} Returns a player subscription if successful, null otherwise.
  */
 async function joinVC(audioPlayer, interaction) {
   // Validate interaction, handle interaction if failed
@@ -58,7 +57,7 @@ function destroyConSub(sub) {
  * INTERACTION BASED: Validates the interaction object.
  * Handles interaction upon failure.
  *
- * @param {BaseInteraction} interaction - The interaction object to validate.
+ * @param {ButtonInteraction} interaction - The interaction object to validate.
  * @returns {boolean} Returns true if the interaction is valid, false otherwise.
  */
 async function _validateInteraction(interaction) {
@@ -88,7 +87,7 @@ async function _validateInteraction(interaction) {
  * INTERACTION BASED: Checks if the user responsible for interaction is currently in a voice channel.
  * Handles interaciton upon failure.
  * 
- * @param {BaseInteraction} interaction - The interaction object representing the user's interaction with the bot.
+ * @param {ButtonInteraction} interaction - The interaction object representing the user's interaction with the bot.
  * @returns {boolean} Returns true if the user is in a voice channel, false otherwise.
  */
 async function isUserInVC(interaction) {
@@ -102,7 +101,7 @@ async function isUserInVC(interaction) {
   }
 
   if (!interaction.member.voice.channel) {
-    console.warn('[!] Warn in _validateInteraction, User not in VC');
+    console.warn('[!] Warn in isUserInVC, User not in VC');
     await interaction.reply({ content: 'Join a voice channel bozo.', ephemeral: true })
     return false;
   }
