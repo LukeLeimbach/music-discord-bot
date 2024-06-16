@@ -1,3 +1,5 @@
+const { AudioPlayerStatus } = require('@discordjs/voice');
+
 /**
  * Represents the InteractionHandler class.
  */
@@ -28,17 +30,21 @@ class InteractionHandler {
       return false;
     }
 
+    const playerStatus = guildController.PlayerController.AudioPlayer.state.status;
     const buttonCustomId = interaction.customId;
     switch (buttonCustomId) {
       case 'togglePlay':
-        const subscription = await guildController.PlayerController.play(interaction);
-        if (!subscription) {
-          console.warn('[!] Warn in handleButtonInteraction. Could not subscribe.');
-          return;
+        // If the player is idle (not playing anything), play the next song.
+        if (playerStatus === AudioPlayerStatus.Idle) {
+          const subscription = await guildController.PlayerController.play(interaction);
+          if (!subscription) {
+            console.warn('[!] Warn in handleButtonInteraction. Could not subscribe.');
+            break;
+          }
+          guildController.PlayerController.subscription = subscription;
+          guildController.PlayerController.connection = subscription.connection;
+          break;
         }
-        guildController.PlayerController.subscription = subscription;
-        guildController.PlayerController.connection = subscription.connection;
-        break;
       case 'stop':
         if (!guildController.PlayerController.connection) {
           interaction.reply({ content: 'No connection to stop.', ephemeral: true });

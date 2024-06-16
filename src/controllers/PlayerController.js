@@ -52,6 +52,12 @@ class PlayerController {
    * @returns {PlayerSubscription|null} Object subscription if successful, null otherwise.
    */
   async play(interaction) {
+    // TODO: Handle error by retrying connect
+    // this.AudioPlayer.on('error', (error) => {
+    //   console.error('[-] Error in play. Retrying in 5 seconds:', error.message);
+    //   setTimeout(() => this.play(interaction), 5000);
+    // });
+    
     this.subscription = await play(this.parentGuildController.QueueController, this.AudioPlayer, interaction);
     if (!this.subscription) return null;
     this.connection = this.subscription.connection;
