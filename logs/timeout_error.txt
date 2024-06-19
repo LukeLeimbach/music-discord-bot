@@ -1,0 +1,167 @@
+This error occured while listening to the bot half way through a song. Looks like the connection got aborted and the error didn't get caught.
+
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+AudioPlayerError: aborted
+    at TLSSocket.socketCloseListener (node:_http_client:460:19)
+    at TLSSocket.emit (node:events:531:35)
+    at node:net:338:12
+    at TCP.done (node:_tls_wrap:657:7)
+Emitted 'error' event on AudioPlayer instance at:
+    at OggDemuxer.onStreamError (C:\Users\lukel\OneDrive\Desktop\music-discord-bot\node_modules\@discordjs\voice\dist\index.js:1122:14)
+    at Object.onceWrapper (node:events:634:26)
+    at OggDemuxer.emit (node:events:531:35)
+    at emitErrorNT (node:internal/streams/destroy:169:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+  resource: <ref *3> AudioResource {
+    playStream: OggDemuxer {
+      _events: {
+        close: [
+          [Function (anonymous)],
+          [Function: onclose],
+          [Function (anonymous)],
+          [Function: onclose]
+        ],
+        error: [
+          [Function: onerror],
+          [Function: onError],
+          [Function: onerror]
+        ],
+        prefinish: [Function: prefinish],
+        finish: [ [Function: onfinish], [Function: onfinish] ],
+        drain: undefined,
+        data: undefined,
+        end: [ [Function: onend], [Function: onend] ],
+        readable: undefined,
+        unpipe: undefined
+      },
+      _readableState: ReadableState {
+        highWaterMark: 16,
+        buffer: [
+          null, null, null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null, null, null,
+          null, null, null, null, null, null, null, null, null, null,
+          ... 475 more items
+        ],
+        bufferIndex: 311,
+        length: 264,
+        pipes: [],
+        awaitDrainWriters: null,
+        [Symbol(kState)]: 1573311,
+        [Symbol(kErroredValue)]: Error: aborted
+            at TLSSocket.socketCloseListener (node:_http_client:460:19)
+            at TLSSocket.emit (node:events:531:35)
+            at node:net:338:12
+            at TCP.done (node:_tls_wrap:657:7) {
+          code: 'ECONNRESET'
+        }
+      },
+      _writableState: WritableState {
+        highWaterMark: 16384,
+        length: 70262,
+        corked: 0,
+        onwrite: [Function: bound onwrite],
+        writelen: 70262,
+        bufferedIndex: 0,
+        pendingcb: 1,
+        [Symbol(kState)]: 84724158,
+        [Symbol(kBufferedValue)]: null,
+        [Symbol(kErroredValue)]: Error: aborted
+            at TLSSocket.socketCloseListener (node:_http_client:460:19)
+            at TLSSocket.emit (node:events:531:35)
+            at node:net:338:12
+            at TCP.done (node:_tls_wrap:657:7) {
+          code: 'ECONNRESET'
+        }
+      },
+      allowHalfOpen: true,
+      _maxListeners: undefined,
+      _eventsCount: 5,
+      _remainder: null,
+      _head: null,
+      _bitstream: null,
+      [Symbol(shapeMode)]: true,
+      [Symbol(kCapture)]: false,
+      [Symbol(kCallback)]: [Function: bound onwrite]
+    },
+    edges: [
+      <ref *1> {
+        type: 'ffmpeg ogg',
+        to: Node {
+          edges: [ [Object], [Object], [Object] ],
+          type: 'ogg/opus'
+        },
+        cost: 2,
+        transformer: [Function: transformer],
+        from: Node { edges: [ [Object], [Circular *1] ], type: 'arbitrary' }
+      },
+      <ref *2> {
+        type: 'ogg/opus demuxer',
+        to: Node { edges: [ [Object] ], type: 'opus' },
+        cost: 1,
+        transformer: [Function: transformer],
+        from: Node {
+          edges: [ [Circular *2], [Object], [Object] ],
+          type: 'ogg/opus'
+        }
+      }
+    ],
+    metadata: null,
+    volume: undefined,
+    encoder: undefined,
+    audioPlayer: <ref *4> AudioPlayer {
+      _events: [Object: null prototype] {},
+      _eventsCount: 0,
+      _maxListeners: undefined,
+      _state: {
+        status: 'playing',
+        missedFrames: 0,
+        playbackDuration: 26720,
+        resource: [Circular *3],
+        onStreamError: [Function: onStreamError]
+      },
+      subscribers: [
+        PlayerSubscription {
+          connection: VoiceConnection {
+            _events: [Object: null prototype] {},
+            _eventsCount: 0,
+            _maxListeners: undefined,
+            rejoinAttempts: 0,
+            _state: [Object],
+            joinConfig: [Object],
+            packets: [Object],
+            receiver: [VoiceReceiver],
+            debug: null,
+            onNetworkingClose: [Function: bound onNetworkingClose],
+            onNetworkingStateChange: [Function: bound onNetworkingStateChange],
+            onNetworkingError: [Function: bound onNetworkingError],
+            onNetworkingDebug: [Function: bound onNetworkingDebug],
+            [Symbol(shapeMode)]: false,
+            [Symbol(kCapture)]: false
+          },
+          player: [Circular *4]
+        }
+      ],
+      behaviors: { noSubscriber: 'stop', maxMissedFrames: 5 },
+      debug: [Function (anonymous)],
+      [Symbol(shapeMode)]: false,
+      [Symbol(kCapture)]: false
+    },
+    playbackDuration: 26720,
+    started: true,
+    silencePaddingFrames: 5,
+    silenceRemaining: -1
+  }
+}
+
+Node.js v20.13.1

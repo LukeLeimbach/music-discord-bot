@@ -9,7 +9,7 @@ module.exports = {
   name: Events.ClientReady,
   once: true,
   async execute(client) {
-    // await __test__(); // Run tests before client is ready
+    await __test__(); // Run tests before client is ready
     await cacheGuilds();
     console.log('[+] Client Ready');
 

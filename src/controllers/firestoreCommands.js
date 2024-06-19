@@ -348,7 +348,7 @@ async function updateClientTextChannelID(guildID, textChannel) {
 
   try {
     await guildDocRef.update({ clientTextChannel: textChannel });
-    defaultTextChannelChangeEmitter.emmit('defaultTextChannelChange', guildID, textChannel);
+    defaultTextChannelChangeEmitter.emit('defaultTextChannelChange', guildID, textChannel);
     return true;
   } catch (error) {
     console.error('[-] Error in updateClientTextChannelID, Unable to update client text channel:', error);

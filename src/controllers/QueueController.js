@@ -20,6 +20,7 @@ class QueueController {
     this.GuildController = GuildController;
     this.guildID = GuildController.guildID;
     this.isLoop = false; //TODO: Implement loop feature
+    this.queue = [];
   }
 
   async _initialize() {
